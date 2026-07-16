@@ -20,7 +20,7 @@ export function createScavioWalmartSearchTool(config?: ScavioClientOptions) {
       max_price: z.number().optional().describe('Maximum price filter'),
     }),
     outputSchema,
-    execute: async input => getClient().walmart.search(input),
+    execute: async input => getClient().walmart.search(input as never),
   });
 }
 

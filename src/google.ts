@@ -13,22 +13,24 @@ export function createScavioGoogleSearchTool(config?: ScavioClientOptions) {
   return createTool({
     id: 'scavio-google-search',
     description:
-      'Search Google in real time via Scavio. Returns organic results, knowledge graph, related questions, news, and more as structured JSON.',
+      'Search Google in real time via Scavio (1 credit). Returns organic results, knowledge graph, related questions, AI overview, and more as structured JSON.',
     inputSchema: z.object({
       query: z.string().describe('The search query'),
       country_code: z.string().optional().describe('Two-letter country code, e.g. "us"'),
       language: z.string().optional().describe('Two-letter language code, e.g. "en"'),
       page: z.number().optional().describe('Result page number (1-based)'),
-      search_type: z
-        .enum(['classic', 'news', 'maps', 'images', 'lens'])
-        .optional()
-        .describe('The Google vertical to search'),
-      light_request: z
-        .boolean()
-        .optional()
-        .describe('Use the cheaper, lighter response (1 credit instead of 2)'),
+      device: z.enum(['desktop', 'mobile']).optional().describe('Device to emulate'),
+      nfpr: z.boolean().optional().describe('Disable spelling correction / auto-fixes'),
     }),
     outputSchema,
-    execute: async input => getClient().google.search(input),
+    execute: async ({ query, country_code, language, page, device, nfpr }) =>
+      getClient().google.search({
+        query,
+        ...(country_code !== undefined ? { gl: country_code } : {}),
+        ...(language !== undefined ? { hl: language } : {}),
+        ...(page !== undefined && page > 1 ? { start: (page - 1) * 10 } : {}),
+        ...(device !== undefined ? { device } : {}),
+        ...(nfpr !== undefined ? { nfpr } : {}),
+      }),
   });
 }

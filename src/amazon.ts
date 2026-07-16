@@ -20,7 +20,7 @@ export function createScavioAmazonSearchTool(config?: ScavioClientOptions) {
       sort_by: z.string().optional().describe('Sort order for results'),
     }),
     outputSchema,
-    execute: async input => getClient().amazon.search(input),
+    execute: async input => getClient().amazon.search(input as never),
   });
 }
 

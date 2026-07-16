@@ -19,7 +19,7 @@ export function createScavioTiktokSearchTool(config?: ScavioClientOptions) {
       sort_type: z.string().optional().describe('Sort order for results'),
     }),
     outputSchema,
-    execute: async input => getClient().tiktok.searchVideos(input),
+    execute: async input => getClient().tiktok.searchVideos(input as never),
   });
 }
 
