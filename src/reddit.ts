@@ -19,7 +19,7 @@ export function createScavioRedditSearchTool(config?: ScavioClientOptions) {
       sort: z.string().optional().describe('Sort order, e.g. "relevance", "new", "top"'),
     }),
     outputSchema,
-    execute: async input => getClient().reddit.search(input),
+    execute: async input => getClient().reddit.search(input as never),
   });
 }
 

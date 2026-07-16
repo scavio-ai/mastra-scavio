@@ -41,9 +41,15 @@ describe('createScavioTools', () => {
 });
 
 describe('createScavioGoogleSearchTool', () => {
+  const response = {
+    organic_results: [
+      { title: 'r1', link: 'https://example.com', snippet: 'first result' },
+    ],
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
-    mockGoogleSearch.mockResolvedValue({ results: [{ title: 'r1', url: 'https://example.com' }] });
+    mockGoogleSearch.mockResolvedValue(response);
   });
 
   it('has the correct id, description, and schemas', () => {
@@ -54,11 +60,36 @@ describe('createScavioGoogleSearchTool', () => {
     expect(tool.outputSchema).toBeDefined();
   });
 
-  it('calls client.google.search with the input and returns the response', async () => {
+  it('maps public params to v2 (gl/hl/start) and returns organic_results', async () => {
     const tool = createScavioGoogleSearchTool({ apiKey: 'test-key' });
-    const input = { query: 'pydantic ai', light_request: true };
-    const result = await tool.execute!(input, {} as any);
-    expect(mockGoogleSearch).toHaveBeenCalledWith(input);
-    expect(result).toEqual({ results: [{ title: 'r1', url: 'https://example.com' }] });
+    const result = await tool.execute!(
+      { query: 'pydantic ai', country_code: 'us', language: 'en', page: 2, device: 'mobile', nfpr: true },
+      {} as any,
+    );
+    expect(mockGoogleSearch).toHaveBeenCalledWith({
+      query: 'pydantic ai',
+      gl: 'us',
+      hl: 'en',
+      start: 10,
+      device: 'mobile',
+      nfpr: true,
+    });
+    expect(result).toEqual(response);
+    expect((result as any).organic_results[0]).toMatchObject({
+      title: 'r1',
+      link: 'https://example.com',
+      snippet: 'first result',
+    });
+  });
+
+  it('omits start for page 1 and does not send v1 param names', async () => {
+    const tool = createScavioGoogleSearchTool({ apiKey: 'test-key' });
+    await tool.execute!({ query: 'q', country_code: 'gb', page: 1 }, {} as any);
+    const sent = mockGoogleSearch.mock.calls[0][0];
+    expect(sent).toEqual({ query: 'q', gl: 'gb' });
+    expect(sent).not.toHaveProperty('start');
+    expect(sent).not.toHaveProperty('country_code');
+    expect(sent).not.toHaveProperty('search_type');
+    expect(sent).not.toHaveProperty('light_request');
   });
 });

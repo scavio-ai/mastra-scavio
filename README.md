@@ -48,4 +48,4 @@ Each tool returns the structured Scavio JSON response. The full Scavio API (33 e
 
 ## Credits
 
-Most calls cost 1 credit. Reddit and Instagram cost 2 credits, and Google costs 2 unless `light_request` is set (1 credit). See [scavio.dev/docs](https://scavio.dev/docs).
+Most calls cost 1 credit, including Google. Reddit and Instagram cost 2 credits. See [scavio.dev/docs](https://scavio.dev/docs).

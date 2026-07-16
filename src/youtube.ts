@@ -20,7 +20,7 @@ export function createScavioYoutubeSearchTool(config?: ScavioClientOptions) {
       sort_by: z.string().optional().describe('Sort order for results'),
     }),
     outputSchema,
-    execute: async input => getClient().youtube.search(input),
+    execute: async input => getClient().youtube.search(input as never),
   });
 }
 
