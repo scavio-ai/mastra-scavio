@@ -5,7 +5,15 @@ import { createScavioInstagramProfileTool, createScavioInstagramSearchTool } fro
 import { createScavioRedditPostTool, createScavioRedditSearchTool } from './reddit.js';
 import { createScavioTiktokProfileTool, createScavioTiktokSearchTool } from './tiktok.js';
 import { createScavioWalmartProductTool, createScavioWalmartSearchTool } from './walmart.js';
-import { createScavioYoutubeMetadataTool, createScavioYoutubeSearchTool } from './youtube.js';
+import {
+  createScavioYoutubeChannelTool,
+  createScavioYoutubeCommentsTool,
+  createScavioYoutubeMetadataTool,
+  createScavioYoutubeSearchTool,
+  createScavioYoutubeStreamsTool,
+  createScavioYoutubeTranscriptTool,
+  createScavioYoutubeVideoTool,
+} from './youtube.js';
 
 export function createScavioTools(config?: ScavioClientOptions) {
   return {
@@ -15,7 +23,12 @@ export function createScavioTools(config?: ScavioClientOptions) {
     scavioWalmartSearch: createScavioWalmartSearchTool(config),
     scavioWalmartProduct: createScavioWalmartProductTool(config),
     scavioYoutubeSearch: createScavioYoutubeSearchTool(config),
+    scavioYoutubeVideo: createScavioYoutubeVideoTool(config),
     scavioYoutubeMetadata: createScavioYoutubeMetadataTool(config),
+    scavioYoutubeComments: createScavioYoutubeCommentsTool(config),
+    scavioYoutubeChannel: createScavioYoutubeChannelTool(config),
+    scavioYoutubeTranscript: createScavioYoutubeTranscriptTool(config),
+    scavioYoutubeStreams: createScavioYoutubeStreamsTool(config),
     scavioRedditSearch: createScavioRedditSearchTool(config),
     scavioRedditPost: createScavioRedditPostTool(config),
     scavioTiktokSearch: createScavioTiktokSearchTool(config),
