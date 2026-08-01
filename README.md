@@ -50,7 +50,7 @@ const agent = new Agent({
 
 ## Tools
 
-`createScavioTools()` returns: `scavioGoogleSearch`, `scavioAmazonSearch`, `scavioAmazonProduct`, `scavioWalmartSearch`, `scavioWalmartProduct`, `scavioYoutubeSearch`, `scavioYoutubeMetadata`, `scavioRedditSearch`, `scavioRedditPost`, `scavioTiktokSearch`, `scavioTiktokProfile`, `scavioInstagramSearch`, `scavioInstagramProfile`.
+`createScavioTools()` returns: `scavioGoogleSearch`, `scavioAmazonSearch`, `scavioAmazonProduct`, `scavioAmazonOffers`, `scavioWalmartSearch`, `scavioWalmartProduct`, `scavioYoutubeSearch`, `scavioYoutubeVideo`, `scavioYoutubeMetadata`, `scavioYoutubeComments`, `scavioYoutubeChannel`, `scavioYoutubeTranscript`, `scavioYoutubeStreams`, `scavioRedditSearch`, `scavioRedditPost`, `scavioTiktokSearch`, `scavioTiktokProfile`, `scavioInstagramSearch`, `scavioInstagramProfile`.
 
 Each tool returns the structured Scavio JSON response. The full Scavio API (33 endpoints) is also available directly via the [`scavio`](https://www.npmjs.com/package/scavio) SDK or the [MCP server](https://scavio.dev/docs).
 
