@@ -49,3 +49,20 @@ export function createScavioAmazonProductTool(config?: ScavioClientOptions) {
     execute: async input => getClient().amazon.product(input),
   });
 }
+
+export function createScavioAmazonOffersTool(config?: ScavioClientOptions) {
+  let client: ScavioClient | null = null;
+  const getClient = () => (client ??= getScavioClient(config));
+
+  return createTool({
+    id: 'scavio-amazon-offers',
+    description:
+      'List every seller offer for one Amazon ASIN via Scavio: price, seller, condition, shipping, and which offer holds the buy box. Page 1 only. Use this instead of the product tool when comparing sellers or checking who owns the buy box.',
+    inputSchema: z.object({
+      asin: z.string().describe('Amazon Standard Identification Number (ASIN)'),
+      country: z.string().optional().describe(COUNTRY_DESCRIPTION),
+    }),
+    outputSchema,
+    execute: async input => getClient().amazon.offers(input),
+  });
+}

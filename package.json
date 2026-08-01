@@ -1,6 +1,6 @@
 {
   "name": "mastra-scavio",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Scavio real-time search tools (Google, YouTube, Amazon, Walmart, Reddit, TikTok, Instagram) for Mastra agents",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -41,7 +41,7 @@
     "access": "public"
   },
   "dependencies": {
-    "scavio": "^0.5.0"
+    "scavio": "^0.12.0"
   },
   "peerDependencies": {
     "@mastra/core": ">=1.0.0-0 <2.0.0-0",

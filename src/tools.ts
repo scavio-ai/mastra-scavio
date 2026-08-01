@@ -1,5 +1,9 @@
 import type { ScavioClientOptions } from './client.js';
-import { createScavioAmazonProductTool, createScavioAmazonSearchTool } from './amazon.js';
+import {
+  createScavioAmazonOffersTool,
+  createScavioAmazonProductTool,
+  createScavioAmazonSearchTool,
+} from './amazon.js';
 import { createScavioGoogleSearchTool } from './google.js';
 import { createScavioInstagramProfileTool, createScavioInstagramSearchTool } from './instagram.js';
 import { createScavioRedditPostTool, createScavioRedditSearchTool } from './reddit.js';
@@ -20,6 +24,7 @@ export function createScavioTools(config?: ScavioClientOptions) {
     scavioGoogleSearch: createScavioGoogleSearchTool(config),
     scavioAmazonSearch: createScavioAmazonSearchTool(config),
     scavioAmazonProduct: createScavioAmazonProductTool(config),
+    scavioAmazonOffers: createScavioAmazonOffersTool(config),
     scavioWalmartSearch: createScavioWalmartSearchTool(config),
     scavioWalmartProduct: createScavioWalmartProductTool(config),
     scavioYoutubeSearch: createScavioYoutubeSearchTool(config),

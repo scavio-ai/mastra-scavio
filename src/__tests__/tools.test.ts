@@ -6,7 +6,7 @@ const mockAmazonProduct = vi.fn();
 vi.mock('scavio', () => ({
   Scavio: vi.fn(() => ({
     google: { search: mockGoogleSearch },
-    amazon: { search: vi.fn(), product: mockAmazonProduct },
+    amazon: { search: vi.fn(), product: mockAmazonProduct, offers: vi.fn() },
     walmart: { search: vi.fn(), product: vi.fn() },
     youtube: {
       search: vi.fn(),
@@ -33,6 +33,7 @@ describe('createScavioTools', () => {
       'scavioGoogleSearch',
       'scavioAmazonSearch',
       'scavioAmazonProduct',
+      'scavioAmazonOffers',
       'scavioWalmartSearch',
       'scavioWalmartProduct',
       'scavioYoutubeSearch',
