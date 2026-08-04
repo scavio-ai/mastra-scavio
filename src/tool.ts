@@ -43,6 +43,18 @@ export interface ScavioToolSpec<TInput extends z.ZodTypeAny = z.ZodTypeAny> {
   call: (client: ScavioClient, input: z.infer<TInput>) => Promise<Record<string, unknown>>;
 }
 
+/**
+ * A spec with its input type erased. `call` is contravariant in `z.infer<TInput>`,
+ * so a narrow `ScavioToolSpec<ZodObject<...>>` is not assignable to
+ * `ScavioToolSpec<ZodTypeAny>` under strictFunctionTypes. Heterogeneous arrays of
+ * specs use this instead.
+ */
+export type AnyScavioToolSpec = Omit<ScavioToolSpec, 'inputSchema' | 'call'> & {
+  inputSchema: z.ZodTypeAny;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  call: (client: ScavioClient, input: any) => Promise<Record<string, unknown>>;
+};
+
 /** Identity helper that keeps each spec's input type inferred inside an array literal. */
 export function defineScavioTool<TInput extends z.ZodTypeAny>(
   spec: ScavioToolSpec<TInput>,
@@ -55,7 +67,7 @@ export function defineScavioTool<TInput extends z.ZodTypeAny>(
  * call, not when the tool is built, so a missing API key only throws for tools
  * the agent actually reaches.
  */
-export function createScavioTool(spec: ScavioToolSpec, config?: ScavioClientOptions) {
+export function createScavioTool(spec: AnyScavioToolSpec, config?: ScavioClientOptions) {
   let client: ScavioClient | null = null;
   const getClient = () => (client ??= getScavioClient(config));
 
@@ -71,7 +83,7 @@ export function createScavioTool(spec: ScavioToolSpec, config?: ScavioClientOpti
 export type ScavioTool = ReturnType<typeof createScavioTool>;
 
 /** Bind a named factory to one spec. Throws at import time if the key is a typo. */
-export function toolFactory(specs: ScavioToolSpec[], key: string) {
+export function toolFactory(specs: AnyScavioToolSpec[], key: string) {
   const spec = specs.find(candidate => candidate.key === key);
   if (!spec) {
     throw new Error(`Unknown Scavio tool spec: ${key}`);

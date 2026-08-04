@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { defineScavioTool, toolFactory } from './tool.js';
-import type { ScavioToolSpec } from './tool.js';
+import type { AnyScavioToolSpec } from './tool.js';
 
 // Google runs on /api/v2/google. v1 (/api/v1/google) was retired on 2026-08-04
 // and now answers 410, so none of its vocabulary survives here: no
@@ -28,7 +28,7 @@ const currency = z.string().optional().describe("Currency code (ISO 4217, e.g. '
 const checkInDate = z.string().describe('Check-in date (YYYY-MM-DD).');
 const checkOutDate = z.string().describe('Check-out date (YYYY-MM-DD).');
 
-export const googleToolSpecs: ScavioToolSpec[] = [
+export const googleToolSpecs: AnyScavioToolSpec[] = [
   defineScavioTool({
     key: 'scavioGoogleSearch',
     id: 'scavio-google-search',
