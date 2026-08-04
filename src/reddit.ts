@@ -12,14 +12,14 @@ export function createScavioRedditSearchTool(config?: ScavioClientOptions) {
 
   return createTool({
     id: 'scavio-reddit-search',
-    description: 'Search Reddit posts, subreddits, or users via Scavio.',
+    description:
+      'Search Reddit posts via Scavio (1 credit). Returns matching posts under data.results, with data.next_cursor and data.has_more for paging. Results cannot be filtered or sorted.',
     inputSchema: z.object({
       query: z.string().describe('The Reddit search query'),
-      type: z.string().optional().describe('Search type, e.g. "posts", "subreddits", "users"'),
-      sort: z.string().optional().describe('Sort order, e.g. "relevance", "new", "top"'),
+      cursor: z.string().optional().describe('Pagination cursor (next_cursor) from a prior response'),
     }),
     outputSchema,
-    execute: async input => getClient().reddit.search(input as never),
+    execute: async input => getClient().reddit.search(input),
   });
 }
 
@@ -29,9 +29,11 @@ export function createScavioRedditPostTool(config?: ScavioClientOptions) {
 
   return createTool({
     id: 'scavio-reddit-post',
-    description: 'Fetch a Reddit post and its comment thread by URL via Scavio.',
+    description:
+      'Fetch a single Reddit post by URL or id via Scavio (1 credit). Returns a flat post object under data (title, text, score, num_comments, ...). It carries no comments - only the num_comments count.',
     inputSchema: z.object({
-      url: z.string().describe('Full URL of the Reddit post'),
+      post_id: z.string().optional().describe('Post fullname ("t3_...") or bare post id'),
+      url: z.string().optional().describe('Full URL of the Reddit post'),
     }),
     outputSchema,
     execute: async input => getClient().reddit.post(input),

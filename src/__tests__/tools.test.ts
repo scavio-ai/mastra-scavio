@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const mockGoogleSearch = vi.fn();
 const mockAmazonProduct = vi.fn();
+const mockRedditSearch = vi.fn();
+const mockRedditPost = vi.fn();
 
 vi.mock('scavio', () => ({
   Scavio: vi.fn(() => ({
@@ -17,13 +19,14 @@ vi.mock('scavio', () => ({
       transcript: vi.fn(),
       streams: vi.fn(),
     },
-    reddit: { search: vi.fn(), post: vi.fn() },
+    reddit: { search: mockRedditSearch, post: mockRedditPost },
     tiktok: { searchVideos: vi.fn(), profile: vi.fn() },
     instagram: { searchUsers: vi.fn(), profile: vi.fn() },
   })),
 }));
 
 import { createScavioGoogleSearchTool } from '../google.js';
+import { createScavioRedditPostTool, createScavioRedditSearchTool } from '../reddit.js';
 import { createScavioTools } from '../tools.js';
 
 describe('createScavioTools', () => {
@@ -105,5 +108,52 @@ describe('createScavioGoogleSearchTool', () => {
     expect(sent).not.toHaveProperty('country_code');
     expect(sent).not.toHaveProperty('search_type');
     expect(sent).not.toHaveProperty('light_request');
+  });
+});
+
+describe('createScavioRedditSearchTool', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRedditSearch.mockResolvedValue({
+      data: { results: [{ post_id: 't3_1v6ngaf', title: 'p1' }], next_cursor: 'abc', has_more: true },
+      response_time: 900,
+      credits_used: 1,
+      credits_remaining: 4999,
+    });
+  });
+
+  // /reddit/search takes only query + cursor; the backend strips anything else,
+  // so a sort/type control would be dead while looking like a working filter.
+  it('sends query and cursor only, and returns data.results', async () => {
+    const tool = createScavioRedditSearchTool({ apiKey: 'test-key' });
+    const result = await tool.execute!({ query: 'serpapi alternative', cursor: 'abc' }, {} as any);
+    const sent = mockRedditSearch.mock.calls[0][0];
+    expect(sent).toEqual({ query: 'serpapi alternative', cursor: 'abc' });
+    expect(sent).not.toHaveProperty('sort');
+    expect(sent).not.toHaveProperty('type');
+    expect((result as any).data.results).toHaveLength(1);
+    expect((result as any).data.next_cursor).toBe('abc');
+    expect((result as any).credits_used).toBe(1);
+  });
+});
+
+describe('createScavioRedditPostTool', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // /reddit/post returns a flat post object under data, with no comments.
+    mockRedditPost.mockResolvedValue({
+      data: { post_id: 't3_1v6ngaf', title: 'p1', text: 'body', subreddit: 'python', num_comments: 12 },
+      response_time: 900,
+      credits_used: 1,
+      credits_remaining: 4998,
+    });
+  });
+
+  it('accepts a post id or a url and returns the flat post object', async () => {
+    const tool = createScavioRedditPostTool({ apiKey: 'test-key' });
+    const result = await tool.execute!({ post_id: 't3_1v6ngaf' }, {} as any);
+    expect(mockRedditPost).toHaveBeenCalledWith({ post_id: 't3_1v6ngaf' });
+    expect((result as any).data.post_id).toBe('t3_1v6ngaf');
+    expect((result as any).data).not.toHaveProperty('comments');
   });
 });

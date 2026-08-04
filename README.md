@@ -18,7 +18,7 @@ npm install mastra-scavio @mastra/core zod
 
 ## Setup
 
-Get a Scavio API key from the [Scavio Dashboard](https://dashboard.scavio.dev) (new accounts get free credits, no credit card). Set `SCAVIO_API_KEY` or pass `{ apiKey }`.
+Get a Scavio API key from the [Scavio Dashboard](https://dashboard.scavio.dev) (new accounts get 50 free credits, no credit card). Set `SCAVIO_API_KEY` or pass `{ apiKey }`.
 
 ## Usage
 
@@ -52,8 +52,12 @@ const agent = new Agent({
 
 `createScavioTools()` returns: `scavioGoogleSearch`, `scavioAmazonSearch`, `scavioAmazonProduct`, `scavioAmazonOffers`, `scavioWalmartSearch`, `scavioWalmartProduct`, `scavioYoutubeSearch`, `scavioYoutubeVideo`, `scavioYoutubeMetadata`, `scavioYoutubeComments`, `scavioYoutubeChannel`, `scavioYoutubeTranscript`, `scavioYoutubeStreams`, `scavioRedditSearch`, `scavioRedditPost`, `scavioTiktokSearch`, `scavioTiktokProfile`, `scavioInstagramSearch`, `scavioInstagramProfile`.
 
-Each tool returns the structured Scavio JSON response. The full Scavio API (33 endpoints) is also available directly via the [`scavio`](https://www.npmjs.com/package/scavio) SDK or the [MCP server](https://scavio.dev/docs).
+Each tool returns the structured Scavio JSON response: `{ data, response_time, credits_used, credits_remaining }`, with the payload under `data` on every platform except Google, whose body is flat.
+
+`scavioYoutubeMetadata` is a deprecated alias of `scavioYoutubeVideo` and is kept only for older agents - use `scavioYoutubeVideo`.
+
+The full Scavio API - 98 endpoints across Google, YouTube, Amazon, Walmart, Reddit, TikTok, TikTok Shop, Instagram, X and LinkedIn - is also available directly via the [`scavio`](https://www.npmjs.com/package/scavio) SDK or the [MCP server](https://scavio.dev/docs).
 
 ## Credits
 
-Most calls cost 1 credit, including Google. Instagram costs 8-10 credits per call, except user posts which costs 2. See [scavio.dev/docs](https://scavio.dev/docs).
+Most calls cost 1 credit, including Google and Reddit. YouTube search costs 2, YouTube streams 3, and YouTube transcript 8. The Instagram tools cost 10 each. See [scavio.dev/docs](https://scavio.dev/docs).
