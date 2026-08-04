@@ -1,5 +1,21 @@
 export { getScavioClient, type ScavioClientOptions, type ScavioClient } from './client.js';
-export { createScavioGoogleSearchTool } from './google.js';
+export {
+  createScavioGoogleSearchTool,
+  createScavioGoogleAiModeTool,
+  createScavioGoogleMapsSearchTool,
+  createScavioGoogleMapsPlaceTool,
+  createScavioGoogleMapsReviewsTool,
+  createScavioGoogleShoppingTool,
+  createScavioGoogleShoppingProductTool,
+  createScavioGoogleShoppingStoresTool,
+  createScavioGoogleFlightsTool,
+  createScavioGoogleHotelsTool,
+  createScavioGoogleHotelsDetailTool,
+  createScavioGoogleNewsTool,
+  createScavioGoogleTrendsTool,
+  createScavioGoogleTrendingTool,
+  googleToolSpecs,
+} from './google.js';
 export {
   createScavioAmazonSearchTool,
   createScavioAmazonProductTool,
@@ -8,14 +24,109 @@ export {
 export { createScavioWalmartSearchTool, createScavioWalmartProductTool } from './walmart.js';
 export {
   createScavioYoutubeSearchTool,
+  createScavioYoutubeShortsTool,
+  createScavioYoutubeSuggestionsTool,
   createScavioYoutubeVideoTool,
-  createScavioYoutubeMetadataTool,
   createScavioYoutubeCommentsTool,
-  createScavioYoutubeChannelTool,
+  createScavioYoutubeCommentRepliesTool,
   createScavioYoutubeTranscriptTool,
+  createScavioYoutubeRelatedTool,
+  createScavioYoutubeChannelSearchTool,
+  createScavioYoutubeChannelTool,
+  createScavioYoutubeChannelVideosTool,
+  createScavioYoutubeChannelShortsTool,
+  createScavioYoutubeChannelCommunityTool,
+  createScavioYoutubeChannelResolveTool,
   createScavioYoutubeStreamsTool,
+  youtubeToolSpecs,
 } from './youtube.js';
-export { createScavioRedditSearchTool, createScavioRedditPostTool } from './reddit.js';
-export { createScavioTiktokSearchTool, createScavioTiktokProfileTool } from './tiktok.js';
-export { createScavioInstagramSearchTool, createScavioInstagramProfileTool } from './instagram.js';
+export {
+  createScavioRedditSearchTool,
+  createScavioRedditSearchSuggestionsTool,
+  createScavioRedditPostTool,
+  createScavioRedditPostCommentsTool,
+  createScavioRedditCommentRepliesTool,
+  createScavioRedditSubredditTool,
+  createScavioRedditSubredditPostsTool,
+  createScavioRedditUserTool,
+  createScavioRedditUserPostsTool,
+  createScavioRedditUserCommentsTool,
+  createScavioRedditPopularTool,
+  createScavioRedditTrendingTool,
+  redditToolSpecs,
+} from './reddit.js';
+export {
+  createScavioTiktokProfileTool,
+  createScavioTiktokUserPostsTool,
+  createScavioTiktokVideoTool,
+  createScavioTiktokVideoCommentsTool,
+  createScavioTiktokCommentRepliesTool,
+  createScavioTiktokSearchVideosTool,
+  createScavioTiktokSearchUsersTool,
+  createScavioTiktokHashtagTool,
+  createScavioTiktokHashtagVideosTool,
+  createScavioTiktokUserFollowersTool,
+  createScavioTiktokUserFollowingsTool,
+  tiktokToolSpecs,
+} from './tiktok.js';
+export {
+  createScavioTiktokShopSearchTool,
+  createScavioTiktokShopSearchSuggestionsTool,
+  createScavioTiktokShopProductTool,
+  createScavioTiktokShopProductReviewsTool,
+  createScavioTiktokShopCategoriesTool,
+  createScavioTiktokShopCategoryProductsTool,
+  createScavioTiktokShopShopProductsTool,
+  createScavioTiktokShopResolveTool,
+  tiktokShopToolSpecs,
+} from './tiktok-shop.js';
+export {
+  createScavioInstagramProfileTool,
+  createScavioInstagramUserPostsTool,
+  createScavioInstagramUserReelsTool,
+  createScavioInstagramUserTaggedTool,
+  createScavioInstagramUserStoriesTool,
+  createScavioInstagramPostTool,
+  createScavioInstagramPostCommentsTool,
+  createScavioInstagramCommentRepliesTool,
+  createScavioInstagramSearchUsersTool,
+  createScavioInstagramSearchHashtagsTool,
+  createScavioInstagramUserFollowersTool,
+  createScavioInstagramUserFollowingsTool,
+  instagramToolSpecs,
+} from './instagram.js';
+export {
+  createScavioXSearchTool,
+  createScavioXTweetTool,
+  createScavioXTweetCommentsTool,
+  createScavioXTweetRetweetersTool,
+  createScavioXUserTool,
+  createScavioXUserTweetsTool,
+  createScavioXUserRepliesTool,
+  createScavioXUserMediaTool,
+  createScavioXUserFollowersTool,
+  createScavioXUserFollowingsTool,
+  createScavioXTrendingTool,
+  xToolSpecs,
+} from './x.js';
+export {
+  createScavioLinkedinPersonTool,
+  createScavioLinkedinPersonAboutTool,
+  createScavioLinkedinPersonPostsTool,
+  createScavioLinkedinCompanyTool,
+  createScavioLinkedinCompanyPostsTool,
+  createScavioLinkedinSearchJobsTool,
+  createScavioLinkedinJobTool,
+  createScavioLinkedinPostTool,
+  createScavioLinkedinPostCommentsTool,
+  linkedinToolSpecs,
+} from './linkedin.js';
+export {
+  createScavioTool,
+  SCAVIO_PLATFORMS,
+  type AnyScavioToolSpec,
+  type ScavioPlatform,
+  type ScavioTool,
+  type ScavioToolSpec,
+} from './tool.js';
 export { createScavioTools } from './tools.js';

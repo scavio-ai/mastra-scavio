@@ -361,3 +361,31 @@ export const googleToolSpecs: AnyScavioToolSpec[] = [
 ];
 
 export const createScavioGoogleSearchTool = toolFactory(googleToolSpecs, 'scavioGoogleSearch');
+export const createScavioGoogleAiModeTool = toolFactory(googleToolSpecs, 'scavioGoogleAiMode');
+export const createScavioGoogleMapsSearchTool = toolFactory(
+  googleToolSpecs,
+  'scavioGoogleMapsSearch',
+);
+export const createScavioGoogleMapsPlaceTool = toolFactory(googleToolSpecs, 'scavioGoogleMapsPlace');
+export const createScavioGoogleMapsReviewsTool = toolFactory(
+  googleToolSpecs,
+  'scavioGoogleMapsReviews',
+);
+export const createScavioGoogleShoppingTool = toolFactory(googleToolSpecs, 'scavioGoogleShopping');
+export const createScavioGoogleShoppingProductTool = toolFactory(
+  googleToolSpecs,
+  'scavioGoogleShoppingProduct',
+);
+export const createScavioGoogleShoppingStoresTool = toolFactory(
+  googleToolSpecs,
+  'scavioGoogleShoppingStores',
+);
+export const createScavioGoogleFlightsTool = toolFactory(googleToolSpecs, 'scavioGoogleFlights');
+export const createScavioGoogleHotelsTool = toolFactory(googleToolSpecs, 'scavioGoogleHotels');
+export const createScavioGoogleHotelsDetailTool = toolFactory(
+  googleToolSpecs,
+  'scavioGoogleHotelsDetail',
+);
+export const createScavioGoogleNewsTool = toolFactory(googleToolSpecs, 'scavioGoogleNews');
+export const createScavioGoogleTrendsTool = toolFactory(googleToolSpecs, 'scavioGoogleTrends');
+export const createScavioGoogleTrendingTool = toolFactory(googleToolSpecs, 'scavioGoogleTrending');
