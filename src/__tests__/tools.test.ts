@@ -77,10 +77,13 @@ describe('createScavioGoogleSearchTool', () => {
     expect(tool.outputSchema).toBeDefined();
   });
 
-  it('maps public params to v2 (gl/hl/start) and returns organic_results', async () => {
+  // /api/v1/google was retired 2026-08-04. v2 params are exposed natively rather
+  // than mapped from the v1 names: start is a 0-based result offset, not a
+  // 1-based page, so a silent remap of `page` would fetch the wrong page.
+  it('sends v2 params natively and returns organic_results', async () => {
     const tool = createScavioGoogleSearchTool({ apiKey: 'test-key' });
     const result = await tool.execute!(
-      { query: 'pydantic ai', country_code: 'us', language: 'en', page: 2, device: 'mobile', nfpr: true },
+      { query: 'pydantic ai', gl: 'us', hl: 'en', start: 10, device: 'mobile', nfpr: true },
       {} as any,
     );
     expect(mockGoogleSearch).toHaveBeenCalledWith({
@@ -99,12 +102,13 @@ describe('createScavioGoogleSearchTool', () => {
     });
   });
 
-  it('omits start for page 1 and does not send v1 param names', async () => {
+  it('never sends v1 param names', async () => {
     const tool = createScavioGoogleSearchTool({ apiKey: 'test-key' });
-    await tool.execute!({ query: 'q', country_code: 'gb', page: 1 }, {} as any);
+    await tool.execute!({ query: 'q', gl: 'gb' }, {} as any);
     const sent = mockGoogleSearch.mock.calls[0][0];
     expect(sent).toEqual({ query: 'q', gl: 'gb' });
-    expect(sent).not.toHaveProperty('start');
+    expect(sent).not.toHaveProperty('page');
+    expect(sent).not.toHaveProperty('language');
     expect(sent).not.toHaveProperty('country_code');
     expect(sent).not.toHaveProperty('search_type');
     expect(sent).not.toHaveProperty('light_request');

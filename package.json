@@ -1,6 +1,6 @@
 {
   "name": "mastra-scavio",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Scavio real-time search tools (Google, YouTube, Amazon, Walmart, Reddit, TikTok, Instagram) for Mastra agents",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -18,7 +18,10 @@
       }
     }
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -26,7 +29,14 @@
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["mastra", "scavio", "web-search", "serp", "tools", "ai-agent"],
+  "keywords": [
+    "mastra",
+    "scavio",
+    "web-search",
+    "serp",
+    "tools",
+    "ai-agent"
+  ],
   "license": "MIT",
   "author": "Scavio <support@scavio.dev>",
   "homepage": "https://scavio.dev",
@@ -41,7 +51,7 @@
     "access": "public"
   },
   "dependencies": {
-    "scavio": "^0.13.0"
+    "scavio": "^0.14.0"
   },
   "peerDependencies": {
     "@mastra/core": ">=1.0.0-0 <2.0.0-0",
