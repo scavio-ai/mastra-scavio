@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { defineScavioTool, toolFactory } from './tool.js';
 import type { AnyScavioToolSpec } from './tool.js';
 
-// YouTube runs on TikHub. 16 paths exist, but /api/v1/youtube/metadata is a
+// YouTube runs on a dedicated upstream source. 16 paths exist, but /api/v1/youtube/metadata is a
 // byte-identical deprecated alias of /api/v1/youtube/video, so only /video is
 // exposed - two tools for one endpoint would just split the agent's choice.
 //
