@@ -1,7 +1,7 @@
 {
   "name": "mastra-scavio",
-  "version": "0.5.0",
-  "description": "Scavio real-time search tools (Google, YouTube, Amazon, Walmart, Reddit, TikTok, TikTok Shop, Instagram, X, LinkedIn) for Mastra agents",
+  "version": "0.6.0",
+  "description": "Scavio real-time data tools for Mastra agents: 188 tools across 31 platforms on one API key - Google, Amazon, Walmart, eBay, Target, Home Depot, Zillow, Redfin, Booking.com, Airbnb, Tripadvisor, Yelp, Indeed, Glassdoor, G2, Capterra, App Store, Google Play, SEC EDGAR, Companies House, Google Ads Transparency, Meta Ad Library, YouTube, TikTok, TikTok Shop, Instagram, Threads, Kuaishou, X, LinkedIn, Reddit - plus extract, which reads any URL as clean Markdown",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -33,12 +33,33 @@
     "mastra",
     "scavio",
     "web-search",
+    "web-scraping",
     "serp",
     "tools",
     "ai-agent",
+    "url-extract",
+    "amazon-api",
+    "walmart-api",
+    "ebay-api",
+    "zillow-api",
+    "redfin-api",
+    "booking-api",
+    "airbnb-api",
+    "yelp-api",
+    "indeed-api",
+    "glassdoor-api",
+    "g2-api",
+    "app-store-api",
+    "google-play-api",
+    "sec-edgar-api",
+    "companies-house-api",
+    "google-ads-transparency",
+    "meta-ad-library",
     "youtube",
     "tiktok",
     "instagram",
+    "threads",
+    "kuaishou",
     "twitter",
     "linkedin"
   ],
@@ -56,7 +77,7 @@
     "access": "public"
   },
   "dependencies": {
-    "scavio": "^0.14.0"
+    "scavio": "^0.15.0"
   },
   "peerDependencies": {
     "@mastra/core": ">=1.0.0-0 <2.0.0-0",

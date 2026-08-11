@@ -24,12 +24,77 @@ const mockLinkedinSearchJobs = vi.fn();
 const mockLinkedinPostComments = vi.fn();
 const mockTiktokShopSearch = vi.fn();
 const mockTiktokShopCategories = vi.fn();
+const mockExtract = vi.fn();
 
 vi.mock('scavio', () => ({
   Scavio: vi.fn(() => ({
     google: { search: mockGoogleSearch },
     amazon: { search: vi.fn(), product: mockAmazonProduct, offers: vi.fn() },
-    walmart: { search: vi.fn(), product: vi.fn() },
+    extract: mockExtract,
+    walmart: {
+      search: vi.fn(),
+      product: vi.fn(),
+      reviews: vi.fn(),
+      category: vi.fn(),
+      offers: vi.fn(),
+      seller: vi.fn(),
+      sellerProducts: vi.fn(),
+    },
+    threads: {
+      profile: vi.fn(),
+      userPosts: vi.fn(),
+      userReplies: vi.fn(),
+      post: vi.fn(),
+      postComments: vi.fn(),
+      searchUsers: vi.fn(),
+    },
+    kuaishou: {
+      profile: vi.fn(),
+      userPosts: vi.fn(),
+      userLive: vi.fn(),
+      userResolve: vi.fn(),
+      video: vi.fn(),
+      videoComments: vi.fn(),
+      commentReplies: vi.fn(),
+      videosBatch: vi.fn(),
+      search: vi.fn(),
+      searchVideos: vi.fn(),
+      searchUsers: vi.fn(),
+      searchLive: vi.fn(),
+      tagFeed: vi.fn(),
+      trending: vi.fn(),
+    },
+    ebay: { search: vi.fn(), product: vi.fn(), seller: vi.fn() },
+    target: { search: vi.fn(), category: vi.fn(), product: vi.fn(), reviews: vi.fn() },
+    homeDepot: { search: vi.fn(), product: vi.fn(), reviews: vi.fn() },
+    zillow: { search: vi.fn(), property: vi.fn(), agentReviews: vi.fn() },
+    booking: { search: vi.fn(), hotel: vi.fn(), reviews: vi.fn() },
+    tripadvisor: { locations: vi.fn(), search: vi.fn(), location: vi.fn(), reviews: vi.fn() },
+    indeed: { search: vi.fn(), job: vi.fn(), company: vi.fn(), companyReviews: vi.fn() },
+    airbnb: { search: vi.fn(), listing: vi.fn(), reviews: vi.fn() },
+    glassdoor: { companies: vi.fn(), company: vi.fn(), reviews: vi.fn(), salaries: vi.fn() },
+    yelp: { search: vi.fn(), business: vi.fn(), reviews: vi.fn() },
+    appStore: { search: vi.fn(), app: vi.fn(), reviews: vi.fn() },
+    googlePlay: { search: vi.fn(), app: vi.fn(), reviews: vi.fn() },
+    sec: {
+      lookup: vi.fn(),
+      company: vi.fn(),
+      filings: vi.fn(),
+      concept: vi.fn(),
+      facts: vi.fn(),
+      search: vi.fn(),
+    },
+    redfin: { search: vi.fn(), property: vi.fn(), market: vi.fn() },
+    companiesHouse: {
+      search: vi.fn(),
+      company: vi.fn(),
+      officers: vi.fn(),
+      filingHistory: vi.fn(),
+    },
+    g2: { search: vi.fn(), product: vi.fn(), reviews: vi.fn() },
+    capterra: { search: vi.fn(), product: vi.fn(), reviews: vi.fn() },
+    googleAds: { advertisers: vi.fn(), search: vi.fn(), creative: vi.fn() },
+    metaAds: { search: vi.fn(), advertiser: vi.fn(), ad: vi.fn() },
     youtube: {
       search: vi.fn(),
       shorts: vi.fn(),
@@ -142,6 +207,29 @@ import {
   createScavioYoutubeTranscriptTool,
   youtubeToolSpecs,
 } from '../youtube.js';
+import { extractToolSpecs } from '../extract.js';
+import { walmartToolSpecs } from '../walmart.js';
+import { threadsToolSpecs } from '../threads.js';
+import { kuaishouToolSpecs } from '../kuaishou.js';
+import { ebayToolSpecs } from '../ebay.js';
+import { targetToolSpecs } from '../target.js';
+import { homeDepotToolSpecs } from '../home-depot.js';
+import { zillowToolSpecs } from '../zillow.js';
+import { bookingToolSpecs } from '../booking.js';
+import { tripadvisorToolSpecs } from '../tripadvisor.js';
+import { indeedToolSpecs } from '../indeed.js';
+import { airbnbToolSpecs } from '../airbnb.js';
+import { glassdoorToolSpecs } from '../glassdoor.js';
+import { yelpToolSpecs } from '../yelp.js';
+import { appStoreToolSpecs } from '../app-store.js';
+import { googlePlayToolSpecs } from '../google-play.js';
+import { secToolSpecs } from '../sec.js';
+import { redfinToolSpecs } from '../redfin.js';
+import { companiesHouseToolSpecs } from '../companies-house.js';
+import { g2ToolSpecs } from '../g2.js';
+import { capterraToolSpecs } from '../capterra.js';
+import { googleAdsToolSpecs } from '../google-ads.js';
+import { metaAdsToolSpecs } from '../meta-ads.js';
 import type { AnyScavioToolSpec } from '../tool.js';
 
 const allSpecs: AnyScavioToolSpec[] = [
@@ -153,12 +241,36 @@ const allSpecs: AnyScavioToolSpec[] = [
   ...instagramToolSpecs,
   ...xToolSpecs,
   ...linkedinToolSpecs,
+  ...extractToolSpecs,
+  ...walmartToolSpecs,
+  ...threadsToolSpecs,
+  ...kuaishouToolSpecs,
+  ...ebayToolSpecs,
+  ...targetToolSpecs,
+  ...homeDepotToolSpecs,
+  ...zillowToolSpecs,
+  ...bookingToolSpecs,
+  ...tripadvisorToolSpecs,
+  ...indeedToolSpecs,
+  ...airbnbToolSpecs,
+  ...glassdoorToolSpecs,
+  ...yelpToolSpecs,
+  ...appStoreToolSpecs,
+  ...googlePlayToolSpecs,
+  ...secToolSpecs,
+  ...redfinToolSpecs,
+  ...companiesHouseToolSpecs,
+  ...g2ToolSpecs,
+  ...capterraToolSpecs,
+  ...googleAdsToolSpecs,
+  ...metaAdsToolSpecs,
 ];
 
 describe('createScavioTools', () => {
   it('returns all Scavio tools keyed by name', () => {
     const tools = createScavioTools({ apiKey: 'test-key' });
     expect(Object.keys(tools)).toEqual([
+      'scavioExtract',
       'scavioGoogleSearch',
       'scavioGoogleAiMode',
       'scavioGoogleMapsSearch',
@@ -178,6 +290,11 @@ describe('createScavioTools', () => {
       'scavioAmazonOffers',
       'scavioWalmartSearch',
       'scavioWalmartProduct',
+      'scavioWalmartReviews',
+      'scavioWalmartCategory',
+      'scavioWalmartOffers',
+      'scavioWalmartSeller',
+      'scavioWalmartSellerProducts',
       'scavioYoutubeSearch',
       'scavioYoutubeShorts',
       'scavioYoutubeSuggestions',
@@ -256,15 +373,100 @@ describe('createScavioTools', () => {
       'scavioLinkedinJob',
       'scavioLinkedinPost',
       'scavioLinkedinPostComments',
+      'scavioThreadsProfile',
+      'scavioThreadsUserPosts',
+      'scavioThreadsUserReplies',
+      'scavioThreadsPost',
+      'scavioThreadsPostComments',
+      'scavioThreadsSearchUsers',
+      'scavioKuaishouProfile',
+      'scavioKuaishouUserPosts',
+      'scavioKuaishouUserLive',
+      'scavioKuaishouUserResolve',
+      'scavioKuaishouVideo',
+      'scavioKuaishouVideoComments',
+      'scavioKuaishouCommentReplies',
+      'scavioKuaishouVideosBatch',
+      'scavioKuaishouSearch',
+      'scavioKuaishouSearchVideos',
+      'scavioKuaishouSearchUsers',
+      'scavioKuaishouSearchLive',
+      'scavioKuaishouTagFeed',
+      'scavioKuaishouTrending',
+      'scavioEbaySearch',
+      'scavioEbayProduct',
+      'scavioEbaySeller',
+      'scavioTargetSearch',
+      'scavioTargetCategory',
+      'scavioTargetProduct',
+      'scavioTargetReviews',
+      'scavioHomeDepotSearch',
+      'scavioHomeDepotProduct',
+      'scavioHomeDepotReviews',
+      'scavioZillowSearch',
+      'scavioZillowProperty',
+      'scavioZillowAgentReviews',
+      'scavioBookingSearch',
+      'scavioBookingHotel',
+      'scavioBookingReviews',
+      'scavioTripadvisorLocations',
+      'scavioTripadvisorSearch',
+      'scavioTripadvisorLocation',
+      'scavioTripadvisorReviews',
+      'scavioIndeedSearch',
+      'scavioIndeedJob',
+      'scavioIndeedCompany',
+      'scavioIndeedCompanyReviews',
+      'scavioAirbnbSearch',
+      'scavioAirbnbListing',
+      'scavioAirbnbReviews',
+      'scavioGlassdoorCompanies',
+      'scavioGlassdoorCompany',
+      'scavioGlassdoorReviews',
+      'scavioGlassdoorSalaries',
+      'scavioYelpSearch',
+      'scavioYelpBusiness',
+      'scavioYelpReviews',
+      'scavioAppStoreSearch',
+      'scavioAppStoreApp',
+      'scavioAppStoreReviews',
+      'scavioGooglePlaySearch',
+      'scavioGooglePlayApp',
+      'scavioGooglePlayReviews',
+      'scavioSecLookup',
+      'scavioSecCompany',
+      'scavioSecFilings',
+      'scavioSecConcept',
+      'scavioSecFacts',
+      'scavioSecSearch',
+      'scavioRedfinSearch',
+      'scavioRedfinProperty',
+      'scavioRedfinMarket',
+      'scavioCompaniesHouseSearch',
+      'scavioCompaniesHouseCompany',
+      'scavioCompaniesHouseOfficers',
+      'scavioCompaniesHouseFilingHistory',
+      'scavioG2Search',
+      'scavioG2Product',
+      'scavioG2Reviews',
+      'scavioCapterraSearch',
+      'scavioCapterraProduct',
+      'scavioCapterraReviews',
+      'scavioGoogleAdsAdvertisers',
+      'scavioGoogleAdsSearch',
+      'scavioGoogleAdsCreative',
+      'scavioMetaAdsSearch',
+      'scavioMetaAdsAdvertiser',
+      'scavioMetaAdsAd',
     ]);
     expect(tools.scavioGoogleSearch.id).toBe('scavio-google-search');
   });
 
-  // One tool per billable endpoint: 97 of them, the same number the repo-wide
-  // coverage guard counts. Reddit, TikTok and Instagram shipped 2 tools each
-  // until 0.5.0 - a wrapper is only "complete" against this number.
-  it('exposes 97 tools, one per billable endpoint', () => {
-    expect(Object.keys(createScavioTools({ apiKey: 'test-key' }))).toHaveLength(97);
+  // One tool per billable endpoint: 188 of them, the same number the repo-wide
+  // coverage guard counts. 97 until 0.5.0; 0.6.0 added the 92-endpoint platform
+  // fanout (21 new platforms, and walmart from 2 endpoints to 7) plus extract.
+  it('exposes 188 tools, one per billable endpoint', () => {
+    expect(Object.keys(createScavioTools({ apiKey: 'test-key' }))).toHaveLength(188);
   });
 
   // A spec that exists but is never registered ships unreachable - which is

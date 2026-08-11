@@ -1,4 +1,141 @@
 import type { ScavioClientOptions } from './client.js';
+import { createScavioExtractTool } from './extract.js';
+import {
+  createScavioWalmartCategoryTool,
+  createScavioWalmartOffersTool,
+  createScavioWalmartProductTool,
+  createScavioWalmartReviewsTool,
+  createScavioWalmartSearchTool,
+  createScavioWalmartSellerProductsTool,
+  createScavioWalmartSellerTool,
+} from './walmart.js';
+import {
+  createScavioThreadsPostCommentsTool,
+  createScavioThreadsPostTool,
+  createScavioThreadsProfileTool,
+  createScavioThreadsSearchUsersTool,
+  createScavioThreadsUserPostsTool,
+  createScavioThreadsUserRepliesTool,
+} from './threads.js';
+import {
+  createScavioKuaishouCommentRepliesTool,
+  createScavioKuaishouProfileTool,
+  createScavioKuaishouSearchLiveTool,
+  createScavioKuaishouSearchTool,
+  createScavioKuaishouSearchUsersTool,
+  createScavioKuaishouSearchVideosTool,
+  createScavioKuaishouTagFeedTool,
+  createScavioKuaishouTrendingTool,
+  createScavioKuaishouUserLiveTool,
+  createScavioKuaishouUserPostsTool,
+  createScavioKuaishouUserResolveTool,
+  createScavioKuaishouVideoCommentsTool,
+  createScavioKuaishouVideoTool,
+  createScavioKuaishouVideosBatchTool,
+} from './kuaishou.js';
+import {
+  createScavioEbayProductTool,
+  createScavioEbaySearchTool,
+  createScavioEbaySellerTool,
+} from './ebay.js';
+import {
+  createScavioTargetCategoryTool,
+  createScavioTargetProductTool,
+  createScavioTargetReviewsTool,
+  createScavioTargetSearchTool,
+} from './target.js';
+import {
+  createScavioHomeDepotProductTool,
+  createScavioHomeDepotReviewsTool,
+  createScavioHomeDepotSearchTool,
+} from './home-depot.js';
+import {
+  createScavioZillowAgentReviewsTool,
+  createScavioZillowPropertyTool,
+  createScavioZillowSearchTool,
+} from './zillow.js';
+import {
+  createScavioBookingHotelTool,
+  createScavioBookingReviewsTool,
+  createScavioBookingSearchTool,
+} from './booking.js';
+import {
+  createScavioTripadvisorLocationTool,
+  createScavioTripadvisorLocationsTool,
+  createScavioTripadvisorReviewsTool,
+  createScavioTripadvisorSearchTool,
+} from './tripadvisor.js';
+import {
+  createScavioIndeedCompanyReviewsTool,
+  createScavioIndeedCompanyTool,
+  createScavioIndeedJobTool,
+  createScavioIndeedSearchTool,
+} from './indeed.js';
+import {
+  createScavioAirbnbListingTool,
+  createScavioAirbnbReviewsTool,
+  createScavioAirbnbSearchTool,
+} from './airbnb.js';
+import {
+  createScavioGlassdoorCompaniesTool,
+  createScavioGlassdoorCompanyTool,
+  createScavioGlassdoorReviewsTool,
+  createScavioGlassdoorSalariesTool,
+} from './glassdoor.js';
+import {
+  createScavioYelpBusinessTool,
+  createScavioYelpReviewsTool,
+  createScavioYelpSearchTool,
+} from './yelp.js';
+import {
+  createScavioAppStoreAppTool,
+  createScavioAppStoreReviewsTool,
+  createScavioAppStoreSearchTool,
+} from './app-store.js';
+import {
+  createScavioGooglePlayAppTool,
+  createScavioGooglePlayReviewsTool,
+  createScavioGooglePlaySearchTool,
+} from './google-play.js';
+import {
+  createScavioSecCompanyTool,
+  createScavioSecConceptTool,
+  createScavioSecFactsTool,
+  createScavioSecFilingsTool,
+  createScavioSecLookupTool,
+  createScavioSecSearchTool,
+} from './sec.js';
+import {
+  createScavioRedfinMarketTool,
+  createScavioRedfinPropertyTool,
+  createScavioRedfinSearchTool,
+} from './redfin.js';
+import {
+  createScavioCompaniesHouseCompanyTool,
+  createScavioCompaniesHouseFilingHistoryTool,
+  createScavioCompaniesHouseOfficersTool,
+  createScavioCompaniesHouseSearchTool,
+} from './companies-house.js';
+import {
+  createScavioG2ProductTool,
+  createScavioG2ReviewsTool,
+  createScavioG2SearchTool,
+} from './g2.js';
+import {
+  createScavioCapterraProductTool,
+  createScavioCapterraReviewsTool,
+  createScavioCapterraSearchTool,
+} from './capterra.js';
+import {
+  createScavioGoogleAdsAdvertisersTool,
+  createScavioGoogleAdsCreativeTool,
+  createScavioGoogleAdsSearchTool,
+} from './google-ads.js';
+import {
+  createScavioMetaAdsAdTool,
+  createScavioMetaAdsAdvertiserTool,
+  createScavioMetaAdsSearchTool,
+} from './meta-ads.js';
 import {
   createScavioAmazonOffersTool,
   createScavioAmazonProductTool,
@@ -82,7 +219,6 @@ import {
   createScavioTiktokVideoCommentsTool,
   createScavioTiktokVideoTool,
 } from './tiktok.js';
-import { createScavioWalmartProductTool, createScavioWalmartSearchTool } from './walmart.js';
 import {
   createScavioXSearchTool,
   createScavioXTrendingTool,
@@ -121,6 +257,7 @@ import {
  */
 export function createScavioTools(config?: ScavioClientOptions) {
   return {
+    scavioExtract: createScavioExtractTool(config),
     scavioGoogleSearch: createScavioGoogleSearchTool(config),
     scavioGoogleAiMode: createScavioGoogleAiModeTool(config),
     scavioGoogleMapsSearch: createScavioGoogleMapsSearchTool(config),
@@ -140,6 +277,11 @@ export function createScavioTools(config?: ScavioClientOptions) {
     scavioAmazonOffers: createScavioAmazonOffersTool(config),
     scavioWalmartSearch: createScavioWalmartSearchTool(config),
     scavioWalmartProduct: createScavioWalmartProductTool(config),
+    scavioWalmartReviews: createScavioWalmartReviewsTool(config),
+    scavioWalmartCategory: createScavioWalmartCategoryTool(config),
+    scavioWalmartOffers: createScavioWalmartOffersTool(config),
+    scavioWalmartSeller: createScavioWalmartSellerTool(config),
+    scavioWalmartSellerProducts: createScavioWalmartSellerProductsTool(config),
     scavioYoutubeSearch: createScavioYoutubeSearchTool(config),
     scavioYoutubeShorts: createScavioYoutubeShortsTool(config),
     scavioYoutubeSuggestions: createScavioYoutubeSuggestionsTool(config),
@@ -218,5 +360,90 @@ export function createScavioTools(config?: ScavioClientOptions) {
     scavioLinkedinJob: createScavioLinkedinJobTool(config),
     scavioLinkedinPost: createScavioLinkedinPostTool(config),
     scavioLinkedinPostComments: createScavioLinkedinPostCommentsTool(config),
+    scavioThreadsProfile: createScavioThreadsProfileTool(config),
+    scavioThreadsUserPosts: createScavioThreadsUserPostsTool(config),
+    scavioThreadsUserReplies: createScavioThreadsUserRepliesTool(config),
+    scavioThreadsPost: createScavioThreadsPostTool(config),
+    scavioThreadsPostComments: createScavioThreadsPostCommentsTool(config),
+    scavioThreadsSearchUsers: createScavioThreadsSearchUsersTool(config),
+    scavioKuaishouProfile: createScavioKuaishouProfileTool(config),
+    scavioKuaishouUserPosts: createScavioKuaishouUserPostsTool(config),
+    scavioKuaishouUserLive: createScavioKuaishouUserLiveTool(config),
+    scavioKuaishouUserResolve: createScavioKuaishouUserResolveTool(config),
+    scavioKuaishouVideo: createScavioKuaishouVideoTool(config),
+    scavioKuaishouVideoComments: createScavioKuaishouVideoCommentsTool(config),
+    scavioKuaishouCommentReplies: createScavioKuaishouCommentRepliesTool(config),
+    scavioKuaishouVideosBatch: createScavioKuaishouVideosBatchTool(config),
+    scavioKuaishouSearch: createScavioKuaishouSearchTool(config),
+    scavioKuaishouSearchVideos: createScavioKuaishouSearchVideosTool(config),
+    scavioKuaishouSearchUsers: createScavioKuaishouSearchUsersTool(config),
+    scavioKuaishouSearchLive: createScavioKuaishouSearchLiveTool(config),
+    scavioKuaishouTagFeed: createScavioKuaishouTagFeedTool(config),
+    scavioKuaishouTrending: createScavioKuaishouTrendingTool(config),
+    scavioEbaySearch: createScavioEbaySearchTool(config),
+    scavioEbayProduct: createScavioEbayProductTool(config),
+    scavioEbaySeller: createScavioEbaySellerTool(config),
+    scavioTargetSearch: createScavioTargetSearchTool(config),
+    scavioTargetCategory: createScavioTargetCategoryTool(config),
+    scavioTargetProduct: createScavioTargetProductTool(config),
+    scavioTargetReviews: createScavioTargetReviewsTool(config),
+    scavioHomeDepotSearch: createScavioHomeDepotSearchTool(config),
+    scavioHomeDepotProduct: createScavioHomeDepotProductTool(config),
+    scavioHomeDepotReviews: createScavioHomeDepotReviewsTool(config),
+    scavioZillowSearch: createScavioZillowSearchTool(config),
+    scavioZillowProperty: createScavioZillowPropertyTool(config),
+    scavioZillowAgentReviews: createScavioZillowAgentReviewsTool(config),
+    scavioBookingSearch: createScavioBookingSearchTool(config),
+    scavioBookingHotel: createScavioBookingHotelTool(config),
+    scavioBookingReviews: createScavioBookingReviewsTool(config),
+    scavioTripadvisorLocations: createScavioTripadvisorLocationsTool(config),
+    scavioTripadvisorSearch: createScavioTripadvisorSearchTool(config),
+    scavioTripadvisorLocation: createScavioTripadvisorLocationTool(config),
+    scavioTripadvisorReviews: createScavioTripadvisorReviewsTool(config),
+    scavioIndeedSearch: createScavioIndeedSearchTool(config),
+    scavioIndeedJob: createScavioIndeedJobTool(config),
+    scavioIndeedCompany: createScavioIndeedCompanyTool(config),
+    scavioIndeedCompanyReviews: createScavioIndeedCompanyReviewsTool(config),
+    scavioAirbnbSearch: createScavioAirbnbSearchTool(config),
+    scavioAirbnbListing: createScavioAirbnbListingTool(config),
+    scavioAirbnbReviews: createScavioAirbnbReviewsTool(config),
+    scavioGlassdoorCompanies: createScavioGlassdoorCompaniesTool(config),
+    scavioGlassdoorCompany: createScavioGlassdoorCompanyTool(config),
+    scavioGlassdoorReviews: createScavioGlassdoorReviewsTool(config),
+    scavioGlassdoorSalaries: createScavioGlassdoorSalariesTool(config),
+    scavioYelpSearch: createScavioYelpSearchTool(config),
+    scavioYelpBusiness: createScavioYelpBusinessTool(config),
+    scavioYelpReviews: createScavioYelpReviewsTool(config),
+    scavioAppStoreSearch: createScavioAppStoreSearchTool(config),
+    scavioAppStoreApp: createScavioAppStoreAppTool(config),
+    scavioAppStoreReviews: createScavioAppStoreReviewsTool(config),
+    scavioGooglePlaySearch: createScavioGooglePlaySearchTool(config),
+    scavioGooglePlayApp: createScavioGooglePlayAppTool(config),
+    scavioGooglePlayReviews: createScavioGooglePlayReviewsTool(config),
+    scavioSecLookup: createScavioSecLookupTool(config),
+    scavioSecCompany: createScavioSecCompanyTool(config),
+    scavioSecFilings: createScavioSecFilingsTool(config),
+    scavioSecConcept: createScavioSecConceptTool(config),
+    scavioSecFacts: createScavioSecFactsTool(config),
+    scavioSecSearch: createScavioSecSearchTool(config),
+    scavioRedfinSearch: createScavioRedfinSearchTool(config),
+    scavioRedfinProperty: createScavioRedfinPropertyTool(config),
+    scavioRedfinMarket: createScavioRedfinMarketTool(config),
+    scavioCompaniesHouseSearch: createScavioCompaniesHouseSearchTool(config),
+    scavioCompaniesHouseCompany: createScavioCompaniesHouseCompanyTool(config),
+    scavioCompaniesHouseOfficers: createScavioCompaniesHouseOfficersTool(config),
+    scavioCompaniesHouseFilingHistory: createScavioCompaniesHouseFilingHistoryTool(config),
+    scavioG2Search: createScavioG2SearchTool(config),
+    scavioG2Product: createScavioG2ProductTool(config),
+    scavioG2Reviews: createScavioG2ReviewsTool(config),
+    scavioCapterraSearch: createScavioCapterraSearchTool(config),
+    scavioCapterraProduct: createScavioCapterraProductTool(config),
+    scavioCapterraReviews: createScavioCapterraReviewsTool(config),
+    scavioGoogleAdsAdvertisers: createScavioGoogleAdsAdvertisersTool(config),
+    scavioGoogleAdsSearch: createScavioGoogleAdsSearchTool(config),
+    scavioGoogleAdsCreative: createScavioGoogleAdsCreativeTool(config),
+    scavioMetaAdsSearch: createScavioMetaAdsSearchTool(config),
+    scavioMetaAdsAdvertiser: createScavioMetaAdsAdvertiserTool(config),
+    scavioMetaAdsAd: createScavioMetaAdsAdTool(config),
   };
 }

@@ -7,18 +7,46 @@ import type { ScavioClient, ScavioClientOptions } from './client.js';
 /** Every Scavio endpoint answers with JSON, so all tools share one output schema. */
 export const outputSchema = z.record(z.string(), z.unknown());
 
-/** Platforms the Scavio API covers, in the order createScavioTools() lists them. */
+/**
+ * Platforms the Scavio API covers, in the order createScavioTools() lists them.
+ *
+ * `extract` is the one entry that is not a platform: /api/v1/extract reads ANY
+ * url, so it is grouped here as its own key and leads the list - it is what an
+ * agent reaches for when no platform endpoint covers the page in front of it.
+ */
 export const SCAVIO_PLATFORMS = [
+  'extract',
   'google',
-  'youtube',
   'amazon',
   'walmart',
+  'youtube',
   'reddit',
   'tiktok',
   'tiktok-shop',
   'instagram',
   'x',
   'linkedin',
+  'threads',
+  'kuaishou',
+  'ebay',
+  'target',
+  'home-depot',
+  'zillow',
+  'booking',
+  'tripadvisor',
+  'indeed',
+  'airbnb',
+  'glassdoor',
+  'yelp',
+  'app-store',
+  'google-play',
+  'sec',
+  'redfin',
+  'companies-house',
+  'g2',
+  'capterra',
+  'google-ads',
+  'meta-ads',
 ] as const;
 
 export type ScavioPlatform = (typeof SCAVIO_PLATFORMS)[number];
