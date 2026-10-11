@@ -8,7 +8,7 @@ import type { AnyScavioToolSpec } from './tool.js';
 // exposed - two tools for one endpoint would just split the agent's choice.
 //
 // Credits are NOT flat here: /search and /shorts cost 2, /streams 3,
-// /transcript 8, everything else 1. Each description states its own cost.
+// /transcript 5, everything else 1. Each description states its own cost.
 //
 // Wire quirk: the four search-ish endpoints take a field literally named
 // `search`, not `query`. The scavio SDK exposes `query` and maps it, so these
@@ -153,9 +153,9 @@ export const youtubeToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-youtube-transcript',
     platform: 'youtube',
     endpoint: '/api/v1/youtube/transcript',
-    credits: 8,
+    credits: 5,
     description:
-      'Fetch a YouTube video transcript via Scavio (8 credits - the most expensive YouTube tool, call it once and cache the text). Returns the whole transcript as one string in data.content, plain text by default or SRT with format "srt".',
+      'Fetch a YouTube video transcript via Scavio (5 credits - the most expensive YouTube tool, call it once and cache the text). Returns the whole transcript as one string in data.content, plain text by default or SRT with format "srt".',
     inputSchema: z.object({
       video_id: videoId,
       language: z.string().optional().describe('Caption language code. Defaults to "en".'),

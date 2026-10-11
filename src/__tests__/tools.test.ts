@@ -687,7 +687,7 @@ describe('credit costs', () => {
     expect(creditsByEndpoint['/api/v1/youtube/search']).toBe(2);
     expect(creditsByEndpoint['/api/v1/youtube/shorts']).toBe(2);
     expect(creditsByEndpoint['/api/v1/youtube/streams']).toBe(3);
-    expect(creditsByEndpoint['/api/v1/youtube/transcript']).toBe(8);
+    expect(creditsByEndpoint['/api/v1/youtube/transcript']).toBe(5);
     expect(creditsByEndpoint['/api/v1/youtube/video']).toBe(1);
     expect(creditsByEndpoint['/api/v1/youtube/suggestions']).toBe(1);
   });

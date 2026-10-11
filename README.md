@@ -199,7 +199,7 @@ Most calls cost 1 credit. Every tool states its own cost in its description, so 
 | All other Kuaishou tools | 1 |
 | `scavioYoutubeSearch`, `scavioYoutubeShorts` | 2 |
 | `scavioYoutubeStreams` | 3 |
-| `scavioYoutubeTranscript` | 8 |
+| `scavioYoutubeTranscript` | 5 |
 | All other YouTube tools | 1 |
 | `scavioLinkedinPerson`, `scavioLinkedinPersonAbout`, `scavioLinkedinCompany`, `scavioLinkedinPost` | 1 |
 | `scavioLinkedinPersonPosts`, `scavioLinkedinCompanyPosts`, `scavioLinkedinSearchJobs`, `scavioLinkedinPostComments` | 10 |
