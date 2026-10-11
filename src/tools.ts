@@ -1,6 +1,13 @@
 import type { ScavioClientOptions } from './client.js';
 import { createScavioExtractTool } from './extract.js';
 import {
+  createScavioBatchExtractTool,
+  createScavioBatchStatusTool,
+  createScavioCrawlStatusTool,
+  createScavioCrawlWebsiteTool,
+  createScavioMapWebsiteTool,
+} from './extract-web.js';
+import {
   createScavioWalmartCategoryTool,
   createScavioWalmartOffersTool,
   createScavioWalmartProductTool,
@@ -255,7 +262,15 @@ import {
  * src/__tests__/tools.test.ts are the package's two hardcoded registries - a new
  * tool must land in both, or it ships unreachable.
  */
-export function createScavioTools(config?: ScavioClientOptions) {
+export interface CreateScavioToolsOptions extends ScavioClientOptions {
+  /**
+   * Add the five website tools (map, crawl, crawl status, batch extract, batch
+   * status). Off by default: a crawl bills per page.
+   */
+  enableCrawl?: boolean;
+}
+
+export function createScavioTools(config?: CreateScavioToolsOptions) {
   return {
     scavioExtract: createScavioExtractTool(config),
     scavioGoogleSearch: createScavioGoogleSearchTool(config),
@@ -445,5 +460,14 @@ export function createScavioTools(config?: ScavioClientOptions) {
     scavioMetaAdsSearch: createScavioMetaAdsSearchTool(config),
     scavioMetaAdsAdvertiser: createScavioMetaAdsAdvertiserTool(config),
     scavioMetaAdsAd: createScavioMetaAdsAdTool(config),
+    ...(config?.enableCrawl
+      ? {
+          scavioMapWebsite: createScavioMapWebsiteTool(config),
+          scavioCrawlWebsite: createScavioCrawlWebsiteTool(config),
+          scavioCrawlStatus: createScavioCrawlStatusTool(config),
+          scavioBatchExtract: createScavioBatchExtractTool(config),
+          scavioBatchStatus: createScavioBatchStatusTool(config),
+        }
+      : {}),
   };
 }

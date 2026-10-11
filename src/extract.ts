@@ -32,9 +32,9 @@ export const extractToolSpecs: AnyScavioToolSpec[] = [
         ),
       mode: z.enum(['normal', 'advanced', 'ultra']).optional()
         .describe(
-          'Fetch tier, and the price-bearing parameter: \'normal\' plain datacenter fetch (1 ' +
-          'credit), \'advanced\' full browser render (1 credit), \'ultra\' the hardest-target ' +
-          'tier (2 credits). Server default \'normal\'.',
+          'Fetch tier, and the price-bearing parameter: \'normal\' is the standard fetch (1 ' +
+          'credit), \'advanced\' renders JavaScript-built pages (1 credit), \'ultra\' reaches ' +
+          'the hardest pages (2 credits). Server default \'normal\'.',
         ),
     }),
     call: (client, input) => client.extract(input),

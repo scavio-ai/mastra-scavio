@@ -208,6 +208,7 @@ import {
   youtubeToolSpecs,
 } from '../youtube.js';
 import { extractToolSpecs } from '../extract.js';
+import { extractWebToolSpecs } from '../extract-web.js';
 import { walmartToolSpecs } from '../walmart.js';
 import { threadsToolSpecs } from '../threads.js';
 import { kuaishouToolSpecs } from '../kuaishou.js';
@@ -242,6 +243,7 @@ const allSpecs: AnyScavioToolSpec[] = [
   ...xToolSpecs,
   ...linkedinToolSpecs,
   ...extractToolSpecs,
+  ...extractWebToolSpecs,
   ...walmartToolSpecs,
   ...threadsToolSpecs,
   ...kuaishouToolSpecs,
@@ -469,17 +471,31 @@ describe('createScavioTools', () => {
     expect(Object.keys(createScavioTools({ apiKey: 'test-key' }))).toHaveLength(188);
   });
 
+  // 0.7.0: the five website tools (map, crawl, batch) are opt-in, so the default
+  // tool set is unchanged and enableCrawl adds exactly five.
+  it('adds the five website tools only with enableCrawl', () => {
+    const tools = Object.keys(createScavioTools({ apiKey: 'test-key', enableCrawl: true }));
+    expect(tools).toHaveLength(193);
+    expect(tools.slice(-5)).toEqual([
+      'scavioMapWebsite',
+      'scavioCrawlWebsite',
+      'scavioCrawlStatus',
+      'scavioBatchExtract',
+      'scavioBatchStatus',
+    ]);
+  });
+
   // A spec that exists but is never registered ships unreachable - which is
   // exactly what happened to 13 of the 14 Google specs before 0.4.0. This is the
   // guard: every declared spec must come back out of createScavioTools().
   it('registers every declared spec - no spec is left unreachable', () => {
-    const registered = new Set(Object.keys(createScavioTools({ apiKey: 'test-key' })));
+    const registered = new Set(Object.keys(createScavioTools({ apiKey: 'test-key', enableCrawl: true })));
     const unreachable = allSpecs.filter(spec => !registered.has(spec.key));
     expect(unreachable.map(spec => spec.key)).toEqual([]);
   });
 
   it('gives every tool a unique id and a cost-bearing description', () => {
-    const tools = createScavioTools({ apiKey: 'test-key' });
+    const tools = createScavioTools({ apiKey: 'test-key', enableCrawl: true });
     const ids = Object.values(tools).map(tool => tool.id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const spec of allSpecs) {

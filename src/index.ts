@@ -290,4 +290,12 @@ export {
   type ScavioTool,
   type ScavioToolSpec,
 } from './tool.js';
-export { createScavioTools } from './tools.js';
+export { createScavioTools, type CreateScavioToolsOptions } from './tools.js';
+export {
+  createScavioMapWebsiteTool,
+  createScavioCrawlWebsiteTool,
+  createScavioCrawlStatusTool,
+  createScavioBatchExtractTool,
+  createScavioBatchStatusTool,
+  extractWebToolSpecs,
+} from './extract-web.js';
