@@ -65,8 +65,7 @@ export const airbnbToolSpecs: AnyScavioToolSpec[] = [
         ),
       currency: z.string().optional()
         .describe(
-          'ISO 4217 currency for prices, 3 letters (default \'USD\'). Without it Airbnb prices ' +
-          'off the proxy exit and identical requests disagree.',
+          'ISO 4217 currency for prices, 3 letters (default \'USD\'). Without it Airbnb picks a currency itself and identical requests can disagree.',
         ),
       page: z.number().int().optional()
         .describe(

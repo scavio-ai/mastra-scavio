@@ -17,8 +17,8 @@ import type { AnyScavioToolSpec } from './tool.js';
 // - followers and followings do not page by cursor at all: they use page_token
 //   plus min_time, and min_time is the one numeric pagination field here.
 // - sort_type and publish_time are strings of digits ("0", "1", "30"), not ints.
-// - data is a raw upstream passthrough, so top-level keys inside data vary with
-//   which upstream leg answered (aweme_list on the app leg, and so on).
+// - data is passed through as TikTok returned it, so top-level keys inside data
+//   vary between responses (aweme_list on some, and so on).
 
 const cursor = z
   .string()

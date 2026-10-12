@@ -100,8 +100,7 @@ export const bookingToolSpecs: AnyScavioToolSpec[] = [
       rooms: z.number().int().optional().describe('Rooms required, >= 1 (default 1).'),
       currency: z.string().optional()
         .describe(
-          'ISO 4217 currency for prices, 3 letters (default \'USD\'). Without it Booking prices ' +
-          'off the proxy exit and identical requests disagree.',
+          'ISO 4217 currency for prices, 3 letters (default \'USD\'). Without it Booking picks a currency itself and identical requests can disagree.',
         ),
     }),
     call: (client, input) => client.booking.search(input),
@@ -144,8 +143,7 @@ export const bookingToolSpecs: AnyScavioToolSpec[] = [
       rooms: z.number().int().optional().describe('Rooms required, >= 1 (default 1).'),
       currency: z.string().optional()
         .describe(
-          'ISO 4217 currency for prices, 3 letters (default \'USD\'). Without it Booking prices ' +
-          'off the proxy exit and identical requests disagree.',
+          'ISO 4217 currency for prices, 3 letters (default \'USD\'). Without it Booking picks a currency itself and identical requests can disagree.',
         ),
     }),
     call: (client, input) => client.booking.hotel(input),

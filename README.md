@@ -2,7 +2,7 @@
 
 [Scavio](https://scavio.dev) real-time data tools for [Mastra](https://mastra.ai) agents — **188 tools across 31 platforms** on one API key. Retail (Amazon, Walmart, eBay, Target, Home Depot), real estate (Zillow, Redfin), travel (Booking.com, Airbnb, Tripadvisor), local (Yelp, Google Maps), jobs (Indeed, Glassdoor, LinkedIn), software reviews (G2, Capterra), app stores (App Store, Google Play), company filings (SEC EDGAR, Companies House), ad libraries (Google Ads Transparency, Meta Ad Library), search (Google) and social (YouTube, TikTok, Instagram, X, Reddit, Threads, Kuaishou) — plus `scavioExtract`, which reads any URL as clean Markdown, and five opt-in tools that map a site's URLs, crawl a whole site or batch-extract a URL list.
 
-> **Amazon changed (breaking).** The upstream provider moved in 2026-07:
+> **Amazon changed (breaking).** The Amazon endpoint changed in 2026-07:
 > `domain` is replaced by `country`, a two-letter marketplace code (`us`, `gb`
 > -- the UK is `gb`, not `uk` -- `de`, `jp`, ...), and `sort_by`, `pages`,
 > `category_id`, `merchant_id`, `language`, `currency`, `device`, `zip_code`
@@ -216,7 +216,7 @@ No single number is true for these, so each tool states its own price and none o
 | Surface | Price |
 |---|---|
 | `scavioWalmartSearch`, `scavioWalmartCategory` | 1 credit on `domain` `com` or `ca`, **2 on `com.mx`**. The other five Walmart tools take no `domain` and are always 1. |
-| `scavioThreadsProfile`, `scavioThreadsUserPosts`, `scavioThreadsUserReplies` | **2 credits addressed by `user_id`, 4 by `username`** — a handle buys a second upstream call, because the upstream handle lookup is dead. Pass `user_id` whenever you have it. The other three Threads tools have no username form and are always 2. |
+| `scavioThreadsProfile`, `scavioThreadsUserPosts`, `scavioThreadsUserReplies` | **2 credits addressed by `user_id`, 4 by `username`** — a handle buys a second lookup. Pass `user_id` whenever you have it. The other three Threads tools have no username form and are always 2. |
 | Kuaishou | **Per endpoint, 1 to 40.** See the table above; one platform-wide figure would be wrong by up to 40x. |
 | `scavioExtract` | 1 credit on `mode` `normal` or `advanced`, **2 on `ultra`**. Only a successful extraction is billed — a dead link, bot wall or timeout costs nothing. |
 | `scavioMapWebsite` | 1 credit on `mode` `normal`; up to 2 on `advanced`, up to 10 on `ultra`, priced by what the call needed. |

@@ -4,7 +4,7 @@ import { defineScavioTool, toolFactory } from './tool.js';
 import type { AnyScavioToolSpec } from './tool.js';
 
 // Glassdoor - 4 endpoints. 1 credit flat on all four endpoints. Addressing reviews or salaries
-// by employer_id costs us two upstream fetches where the url form costs one; the price to you is
+// by employer_id takes an extra lookup where the url form does not; the price to you is
 // 1 either way, but passing back reviews_url / salaries_url is the faster path.
 //
 // LOOKUP FIRST: scavio-glassdoor-companies is the entry point. Every other Glassdoor endpoint is
@@ -74,7 +74,7 @@ export const glassdoorToolSpecs: AnyScavioToolSpec[] = [
       employer_id: z.string().optional()
         .describe(
           'Glassdoor employer id (1-50 characters): \'1699\', \'E1699\' or \'IE1699\'. Must be a ' +
-          'STRING - a JSON number is rejected. Addressing by id costs two upstream fetches; the ' +
+          'STRING - a JSON number is rejected. Addressing by id takes an extra lookup; the ' +
           'customer price is unchanged.',
         ),
       company: z.string().optional()
@@ -124,7 +124,7 @@ export const glassdoorToolSpecs: AnyScavioToolSpec[] = [
       employer_id: z.string().optional()
         .describe(
           'Glassdoor employer id (1-50 characters): \'1699\', \'E1699\' or \'IE1699\'. Must be a ' +
-          'STRING - a JSON number is rejected. Addressing by id costs two upstream fetches; the ' +
+          'STRING - a JSON number is rejected. Addressing by id takes an extra lookup; the ' +
           'customer price is unchanged.',
         ),
       company: z.string().optional()

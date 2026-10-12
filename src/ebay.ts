@@ -36,7 +36,7 @@ export const ebayToolSpecs: AnyScavioToolSpec[] = [
       ]).optional()
         .describe(
           'Result sort order. Defaults to \'best_match\'. eBay\'s \'Distance: nearest first\' is ' +
-          'deliberately unsupported (it ranks against our proxy exit, not the caller).',
+          'deliberately unsupported (it would not rank by the location of the caller).',
         ),
       min_price: z.number().optional().describe('Minimum price, inclusive. Must be 0 or greater.'),
       max_price: z.number().optional().describe('Maximum price, inclusive. Must be 0 or greater.'),

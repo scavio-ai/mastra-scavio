@@ -580,8 +580,7 @@ describe('body-priced surfaces never state a flat cost', () => {
     }
   });
 
-  // 2 credits addressed by user_id, 4 by username - the handle costs a second
-  // upstream call. Only these three endpoints have a username form.
+  // 2 credits addressed by user_id, 4 by username - the handle costs a second lookup. Only these three endpoints have a username form.
   it('threads prices the handle lookup on the three username-keyed tools', () => {
     for (const key of [
       'scavioThreadsProfile',

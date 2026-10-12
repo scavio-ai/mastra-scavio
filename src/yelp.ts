@@ -26,8 +26,7 @@ export const yelpToolSpecs: AnyScavioToolSpec[] = [
       location: z.string().optional()
         .describe(
           'Where to look (1-200 characters): city and region, a full address, or a postcode. ' +
-          'Effectively required - Yelp geolocates a location-less search off the proxy exit, so ' +
-          'the same request answers about a different metro run to run.',
+          'Effectively required - without it Yelp picks a location itself, so the same request can answer about a different metro run to run.',
         ),
       page: z.number().int().optional()
         .describe(
