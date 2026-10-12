@@ -704,16 +704,16 @@ describe('credit costs', () => {
     expect(creditsByEndpoint['/api/v1/linkedin/job']).toBe(30);
   });
 
-  // Instagram is per-endpoint, never flat: 10 where both upstream legs are
-  // billed, 8 where there is no fallback leg to hedge, 2 for user posts.
-  it('prices Instagram on its three tiers, never flat', () => {
-    expect(creditsByEndpoint['/api/v1/instagram/user/posts']).toBe(2);
-    expect(creditsByEndpoint['/api/v1/instagram/post']).toBe(8);
-    expect(creditsByEndpoint['/api/v1/instagram/post/comments/replies']).toBe(8);
-    for (const tenCredit of [
-      '/api/v1/instagram/profile',
-      '/api/v1/instagram/user/reels',
-      '/api/v1/instagram/user/tagged',
+  // Instagram is per-endpoint, never flat: profile, reels and tagged 1,
+  // everything else 2.
+  it('prices Instagram per endpoint, never flat', () => {
+    for (const oneCredit of ['/api/v1/instagram/profile', '/api/v1/instagram/user/reels', '/api/v1/instagram/user/tagged']) {
+      expect(creditsByEndpoint[oneCredit]).toBe(1);
+    }
+    for (const twoCredit of [
+      '/api/v1/instagram/user/posts',
+      '/api/v1/instagram/post',
+      '/api/v1/instagram/post/comments/replies',
       '/api/v1/instagram/user/stories',
       '/api/v1/instagram/post/comments',
       '/api/v1/instagram/search/users',
@@ -721,9 +721,9 @@ describe('credit costs', () => {
       '/api/v1/instagram/user/followers',
       '/api/v1/instagram/user/followings',
     ]) {
-      expect(creditsByEndpoint[tenCredit]).toBe(10);
+      expect(creditsByEndpoint[twoCredit]).toBe(2);
     }
-    expect(new Set(instagramToolSpecs.map(spec => spec.credits))).toEqual(new Set([2, 8, 10]));
+    expect(new Set(instagramToolSpecs.map(spec => spec.credits))).toEqual(new Set([1, 2]));
   });
 
   it('prices Google v2, Reddit, TikTok, TikTok Shop and X flat at 1 credit', () => {

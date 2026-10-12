@@ -3,11 +3,9 @@ import { z } from 'zod';
 import { defineScavioTool, toolFactory } from './tool.js';
 import type { AnyScavioToolSpec } from './tool.js';
 
-// Instagram - 12 endpoints, priced PER ENDPOINT and never flat: 10 for the
-// hedged calls, 8 for the two that have no fallback leg to hedge (post detail
-// and comment replies), and 2 for user posts, whose cheap leg is the primary.
-// Cost is stated in every description because the spread is 5x - fanning out
-// blindly here is the fastest way to burn a credit balance.
+// Instagram - 12 endpoints, priced PER ENDPOINT and never flat: profile, reels
+// and tagged 1, everything else 2, the searches 8 with a cursor; any request can
+// cost up to 10 when it needs extra work. Cost is stated in every description.
 //
 // Wire quirks worth knowing before building a pipeline:
 // - the search tools take `keyword`, not query.
@@ -20,7 +18,7 @@ import type { AnyScavioToolSpec } from './tool.js';
 //   tool before asking for replies.
 // - `count` does not exist on profile, stories, the post tools or the search
 //   tools, and defaults to 12 (not 20) where it does exist.
-// - data is a raw upstream passthrough: video lives at video_versions[].url
+// - post detail: video lives at video_versions[].url
 //   (there is no video_url) and covers at image_versions2.candidates (there is
 //   no thumbnail_url). media_type is 1 image, 2 video, 8 carousel.
 
@@ -46,9 +44,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-profile',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/profile',
-    credits: 10,
+    credits: 1,
     description:
-      'Fetch an Instagram profile via Scavio (10 credits). The profile is inlined at the root of data - pk, username, full_name, biography, follower_count, following_count, is_private, is_verified, profile_pic_url - with no data.user wrapper. Provide username or user_id.',
+      'Fetch an Instagram profile via Scavio (1 credit). The profile is inlined at the root of data - pk, username, full_name, biography, follower_count, following_count, is_private, is_verified, profile_pic_url - with no data.user wrapper. Provide username or user_id.',
     inputSchema: z.object({ username, user_id: userId }),
     call: (client, input) => client.instagram.profile(input),
   }),
@@ -59,7 +57,7 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     endpoint: '/api/v1/instagram/user/posts',
     credits: 2,
     description:
-      "Fetch an account's Instagram timeline posts via Scavio (2 credits - the cheapest Instagram tool by 5x, because its primary upstream leg is the cheap one). Items usually arrive at data.data with data.pagination_token; a fallback leg answers with data.items and next_max_id instead, so read both. Prefer this over the reels and tagged tools when you just need recent media.",
+      "Fetch an account's Instagram timeline posts via Scavio (2 credits per page). Items arrive at data.data; pass data.pagination_token as cursor for the next page. Use it when you need the whole timeline; the reels tool is cheaper (1 credit) when reels alone will do.",
     inputSchema: z.object({ username, user_id: userId, count: feedCount, cursor }),
     call: (client, input) => client.instagram.userPosts(input),
   }),
@@ -68,9 +66,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-user-reels',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/user/reels',
-    credits: 10,
+    credits: 1,
     description:
-      "Fetch an account's Instagram reels via Scavio (10 credits). Returns data.items with data.next_max_id. Five times the price of scavio-instagram-user-posts, so use it only when you specifically need reels rather than the timeline.",
+      "Fetch an account's Instagram reels via Scavio (1 credit; 2 the first time a username is looked up). Returns data.items with data.next_max_id.",
     inputSchema: z.object({ username, user_id: userId, count: feedCount, cursor }),
     call: (client, input) => client.instagram.userReels(input),
   }),
@@ -79,9 +77,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-user-tagged',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/user/tagged',
-    credits: 10,
+    credits: 1,
     description:
-      'Fetch the posts an Instagram account is tagged in via Scavio (10 credits). Returns data.items with data.more_available and data.next_max_id. This is other accounts posting about them - use it for brand mentions and creator collaborations, not for their own feed.',
+      'Fetch the posts an Instagram account is tagged in via Scavio (1 credit; 2 the first time a username is looked up). Returns data.items with data.next_max_id. Video items carry video_url null - fetch the video with scavio-instagram-post. This is other accounts posting about them - use it for brand mentions and creator collaborations, not for their own feed.',
     inputSchema: z.object({ username, user_id: userId, count: feedCount, cursor }),
     call: (client, input) => client.instagram.userTagged(input),
   }),
@@ -90,9 +88,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-user-stories',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/user/stories',
-    credits: 10,
+    credits: 2,
     description:
-      "Fetch an Instagram account's currently active stories via Scavio (10 credits). Returns data.items and data.reels. Stories expire after 24 hours and there is no pagination here - no count, no cursor. Provide username or user_id.",
+      "Fetch an Instagram account's currently active stories via Scavio (2 credits). Returns data.items and data.reels. Stories expire after 24 hours and there is no pagination here - no count, no cursor. Provide username or user_id.",
     inputSchema: z.object({ username, user_id: userId }),
     call: (client, input) => client.instagram.userStories(input),
   }),
@@ -101,9 +99,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-post',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/post',
-    credits: 8,
+    credits: 2,
     description:
-      'Fetch one Instagram post via Scavio (8 credits - cheaper than most Instagram tools because there is no fallback leg to hedge). The post is data.items[0]: caption, like_count, comment_count, media_type (1 image, 2 video, 8 carousel), video_versions[].url for video and image_versions2.candidates for the cover. It also carries the media_id that scavio-instagram-comment-replies requires. Provide url, media_id or shortcode.',
+      'Fetch one Instagram post via Scavio (2 credits). The post is data.items[0]: caption, like_count, comment_count, media_type (1 image, 2 video, 8 carousel), video_versions[].url for video and image_versions2.candidates for the cover. It also carries the media_id that scavio-instagram-comment-replies requires. Provide url, media_id or shortcode.',
     inputSchema: z.object({
       url: z.string().optional().describe('Full Instagram post URL.'),
       media_id: z
@@ -119,9 +117,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-post-comments',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/post/comments',
-    credits: 10,
+    credits: 2,
     description:
-      'Fetch the comments on an Instagram post via Scavio (10 credits). Returns data.comments with data.comment_count, data.has_more_comments and data.next_min_id. Identify the post by shortcode or url ONLY - media_id is not accepted here, unlike the post and replies tools.',
+      'Fetch the comments on an Instagram post via Scavio (2 credits per page). Returns data.comments with data.comment_count, data.has_more_comments and data.next_min_id. Identify the post by shortcode or url ONLY - media_id is not accepted here, unlike the post and replies tools.',
     inputSchema: z.object({
       shortcode: z.string().optional().describe("Shortcode from the post URL, e.g. 'DUajw4YkorV'."),
       url: z
@@ -132,7 +130,7 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
       sort_order: z
         .enum(['popular', 'newest'])
         .optional()
-        .describe('popular (default) or newest. A fallback leg can silently ignore it.'),
+        .describe('popular (default) or newest.'),
     }),
     call: (client, input) => client.instagram.postComments(input),
   }),
@@ -141,9 +139,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-comment-replies',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/post/comments/replies',
-    credits: 8,
+    credits: 2,
     description:
-      'Fetch the replies to one Instagram comment via Scavio (8 credits - no fallback leg to hedge). Returns data.child_comments with data.next_min_child_id. Requires media_id plus comment_id: the comments tool does not return a media_id, so resolve it with scavio-instagram-post first. A shortcode or url will not work here.',
+      'Fetch the replies to one Instagram comment via Scavio (2 credits). Returns data.child_comments; when data.has_more_tail_child_comments is true, pass data.next_min_child_cursor as cursor. Requires media_id plus comment_id: the comments tool does not return a media_id, so resolve it with scavio-instagram-post first. A shortcode or url will not work here.',
     inputSchema: z.object({
       media_id: z.string().describe('Instagram media id, from scavio-instagram-post.'),
       comment_id: z.string().describe('Parent comment id, from scavio-instagram-post-comments.'),
@@ -156,9 +154,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-search-users',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/search/users',
-    credits: 10,
+    credits: 2,
     description:
-      'Search Instagram accounts by keyword via Scavio (10 credits). Returns data.users with data.rank_token. Page size is not controllable - there is no count - and a fallback leg can reset paging to page 1, so treat deep paging as unreliable.',
+      'Search Instagram accounts by keyword via Scavio (2 credits; a request with a cursor costs 8). Returns data.users with data.rank_token. Page size is not controllable - there is no count - so the first page is usually the one to use.',
     inputSchema: z.object({ keyword, cursor }),
     call: (client, input) => client.instagram.searchUsers(input),
   }),
@@ -167,9 +165,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-search-hashtags',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/search/hashtags',
-    credits: 10,
+    credits: 2,
     description:
-      'Search Instagram hashtags by keyword via Scavio (10 credits). Returns data.hashtags with media counts and data.rank_token. Same no-count, unreliable-deep-paging caveat as the user search.',
+      'Search Instagram hashtags by keyword via Scavio (2 credits; a request with a cursor costs 8). Returns data.hashtags with media counts and data.rank_token. No count parameter, same as the user search.',
     inputSchema: z.object({ keyword, cursor }),
     call: (client, input) => client.instagram.searchHashtags(input),
   }),
@@ -178,9 +176,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-user-followers',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/user/followers',
-    credits: 10,
+    credits: 2,
     description:
-      "List an Instagram account's followers via Scavio (10 credits). Returns data.users with data.has_more; the followers response often carries no continuation id, so paging can end earlier than followings. Each page costs another 10 credits - cap how deep you walk.",
+      "List an Instagram account's followers via Scavio (2 credits per page). Returns data.users with data.has_more, and data.next_max_id when there is a next page. Each page costs another 2 credits - cap how deep you walk.",
     inputSchema: z.object({ username, user_id: userId, count: followCount, cursor }),
     call: (client, input) => client.instagram.userFollowers(input),
   }),
@@ -189,9 +187,9 @@ export const instagramToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-instagram-user-followings',
     platform: 'instagram',
     endpoint: '/api/v1/instagram/user/followings',
-    credits: 10,
+    credits: 2,
     description:
-      'List the accounts an Instagram user follows via Scavio (10 credits). Returns data.users with data.next_max_id and data.has_more. The public name is followings (plural), matching TikTok.',
+      'List the accounts an Instagram user follows via Scavio (2 credits per page). Returns data.users with data.next_max_id and data.has_more. The public name is followings (plural), matching TikTok.',
     inputSchema: z.object({ username, user_id: userId, count: followCount, cursor }),
     call: (client, input) => client.instagram.userFollowings(input),
   }),

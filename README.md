@@ -204,11 +204,10 @@ Most calls cost 1 credit. Every tool states its own cost in its description, so 
 | `scavioLinkedinPerson`, `scavioLinkedinPersonAbout`, `scavioLinkedinCompany`, `scavioLinkedinPost` | 1 |
 | `scavioLinkedinPersonPosts`, `scavioLinkedinCompanyPosts`, `scavioLinkedinSearchJobs`, `scavioLinkedinPostComments` | 10 |
 | `scavioLinkedinJob` | 30 |
-| `scavioInstagramUserPosts` | 2 |
-| `scavioInstagramPost`, `scavioInstagramCommentReplies` | 8 |
-| All other Instagram tools | 10 |
+| `scavioInstagramProfile`, `scavioInstagramUserReels`, `scavioInstagramUserTagged` | 1 |
+| All other Instagram tools | 2 |
 
-Instagram is priced per endpoint rather than flat, on three tiers: 10 where both upstream legs are billed, 8 for the two calls with no fallback leg to hedge (`scavioInstagramPost`, `scavioInstagramCommentReplies`), and 2 for `scavioInstagramUserPosts`, whose cheap leg is the primary one. Prefer `scavioInstagramUserPosts` over `scavioInstagramUserReels` when the timeline will do — same shape of data, one fifth of the cost. Paginated tools bill per page. See [scavio.dev/docs](https://scavio.dev/docs).
+Instagram is priced per endpoint rather than flat: profile, reels and tagged 1 credit (reels and tagged 2 the first time a username is looked up), every other Instagram tool 2, and the user and hashtag searches 8 when called with a `cursor`. Any Instagram request can cost up to 10 when it needs extra work; `credits_used` in the response is the exact charge. Paginated tools bill per page. See [scavio.dev/docs](https://scavio.dev/docs).
 
 ### These surfaces are priced by the request body
 
