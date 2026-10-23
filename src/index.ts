@@ -171,6 +171,7 @@ export {
   createScavioTargetCategoryTool,
   createScavioTargetProductTool,
   createScavioTargetReviewsTool,
+  createScavioTargetAvailabilityTool,
   targetToolSpecs,
 } from './target.js';
 export {

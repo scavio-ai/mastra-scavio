@@ -46,6 +46,7 @@ import {
   createScavioEbaySellerTool,
 } from './ebay.js';
 import {
+  createScavioTargetAvailabilityTool,
   createScavioTargetCategoryTool,
   createScavioTargetProductTool,
   createScavioTargetReviewsTool,
@@ -402,6 +403,7 @@ export function createScavioTools(config?: CreateScavioToolsOptions) {
     scavioTargetCategory: createScavioTargetCategoryTool(config),
     scavioTargetProduct: createScavioTargetProductTool(config),
     scavioTargetReviews: createScavioTargetReviewsTool(config),
+    scavioTargetAvailability: createScavioTargetAvailabilityTool(config),
     scavioHomeDepotSearch: createScavioHomeDepotSearchTool(config),
     scavioHomeDepotProduct: createScavioHomeDepotProductTool(config),
     scavioHomeDepotReviews: createScavioHomeDepotReviewsTool(config),

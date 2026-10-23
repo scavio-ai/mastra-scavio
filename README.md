@@ -1,6 +1,6 @@
 # mastra-scavio
 
-[Scavio](https://scavio.dev) real-time data tools for [Mastra](https://mastra.ai) agents — **188 tools across 31 platforms** on one API key. Retail (Amazon, Walmart, eBay, Target, Home Depot), real estate (Zillow, Redfin), travel (Booking.com, Airbnb, Tripadvisor), local (Yelp, Google Maps), jobs (Indeed, Glassdoor, LinkedIn), software reviews (G2, Capterra), app stores (App Store, Google Play), company filings (SEC EDGAR, Companies House), ad libraries (Google Ads Transparency, Meta Ad Library), search (Google) and social (YouTube, TikTok, Instagram, X, Reddit, Threads, Kuaishou) — plus `scavioExtract`, which reads any URL as clean Markdown, and five opt-in tools that map a site's URLs, crawl a whole site or batch-extract a URL list.
+[Scavio](https://scavio.dev) real-time data tools for [Mastra](https://mastra.ai) agents — **189 tools across 31 platforms** on one API key. Retail (Amazon, Walmart, eBay, Target, Home Depot), real estate (Zillow, Redfin), travel (Booking.com, Airbnb, Tripadvisor), local (Yelp, Google Maps), jobs (Indeed, Glassdoor, LinkedIn), software reviews (G2, Capterra), app stores (App Store, Google Play), company filings (SEC EDGAR, Companies House), ad libraries (Google Ads Transparency, Meta Ad Library), search (Google) and social (YouTube, TikTok, Instagram, X, Reddit, Threads, Kuaishou) — plus `scavioExtract`, which reads any URL as clean Markdown, and five opt-in tools that map a site's URLs, crawl a whole site or batch-extract a URL list.
 
 > **Amazon changed (breaking).** The Amazon endpoint changed in 2026-07:
 > `domain` is replaced by `country`, a two-letter marketplace code (`us`, `gb`
@@ -53,7 +53,7 @@ const agent = new Agent({
 
 ## Tools
 
-`createScavioTools()` returns **188 tools** across 31 platforms plus `extract` — one per billable Scavio endpoint — and **193** with `{ enableCrawl: true }`, which adds the five website tools. Requires `scavio@^0.23.0`.
+`createScavioTools()` returns **189 tools** across 31 platforms plus `extract` — one per billable Scavio endpoint — and **194** with `{ enableCrawl: true }`, which adds the five website tools. Requires `scavio@^0.27.0`.
 
 | Platform | Tools | Names |
 |---|---|---|
@@ -72,7 +72,7 @@ const agent = new Agent({
 | [Threads](https://scavio.dev/docs/threads-profile) | 6 | `scavioThreadsProfile`, `scavioThreadsUserPosts`, `scavioThreadsUserReplies`, `scavioThreadsPost`, `scavioThreadsPostComments`, `scavioThreadsSearchUsers` |
 | [Kuaishou](https://scavio.dev/docs/kuaishou-profile) | 14 | `scavioKuaishouProfile`, `scavioKuaishouUserPosts`, `scavioKuaishouUserLive`, `scavioKuaishouUserResolve`, `scavioKuaishouVideo`, `scavioKuaishouVideoComments`, `scavioKuaishouCommentReplies`, `scavioKuaishouVideosBatch`, `scavioKuaishouSearch`, `scavioKuaishouSearchVideos`, `scavioKuaishouSearchUsers`, `scavioKuaishouSearchLive`, `scavioKuaishouTagFeed`, `scavioKuaishouTrending` |
 | [eBay](https://scavio.dev/docs/ebay-search) | 3 | `scavioEbaySearch`, `scavioEbayProduct`, `scavioEbaySeller` |
-| [Target](https://scavio.dev/docs/target-search) | 4 | `scavioTargetSearch`, `scavioTargetCategory`, `scavioTargetProduct`, `scavioTargetReviews` |
+| [Target](https://scavio.dev/docs/target-search) | 5 | `scavioTargetSearch`, `scavioTargetCategory`, `scavioTargetProduct`, `scavioTargetReviews`, `scavioTargetAvailability` |
 | [Home Depot](https://scavio.dev/docs/home-depot-search) | 3 | `scavioHomeDepotSearch`, `scavioHomeDepotProduct`, `scavioHomeDepotReviews` |
 | [Zillow](https://scavio.dev/docs/zillow-search) | 3 | `scavioZillowSearch`, `scavioZillowProperty`, `scavioZillowAgentReviews` |
 | [Booking.com](https://scavio.dev/docs/booking-search) | 3 | `scavioBookingSearch`, `scavioBookingHotel`, `scavioBookingReviews` |
@@ -119,7 +119,7 @@ Reddit, TikTok and Instagram shipped two tools each before 0.5.0; the rest of th
 
 ### New in 0.7.0
 
-Five website tools, opt-in with `createScavioTools({ enableCrawl: true })` so the default set is unchanged: `scavioMapWebsite`, `scavioCrawlWebsite`, `scavioCrawlStatus`, `scavioBatchExtract` and `scavioBatchStatus`. Requires `scavio@^0.23.0`, whose `extract` became a callable namespace (`scavio.extract({ url })` still reads one page). See [Map, crawl and batch](#map-crawl-and-batch).
+Five website tools, opt-in with `createScavioTools({ enableCrawl: true })` so the default set is unchanged: `scavioMapWebsite`, `scavioCrawlWebsite`, `scavioCrawlStatus`, `scavioBatchExtract` and `scavioBatchStatus`. Requires `scavio@^0.27.0`, whose `extract` became a callable namespace (`scavio.extract({ url })` still reads one page). See [Map, crawl and batch](#map-crawl-and-batch).
 
 ### New in 0.6.0
 

@@ -36,7 +36,7 @@ export const targetToolSpecs: AnyScavioToolSpec[] = [
         ),
       store_id: z.string().optional()
         .describe(
-          'Numeric Target store id whose prices and availability the response reflects. Defaults ' +
+          'Numeric Target store id whose prices the response reflects. Defaults ' +
           'to \'3991\', the store target.com uses with no store context.',
         ),
     }),
@@ -76,7 +76,7 @@ export const targetToolSpecs: AnyScavioToolSpec[] = [
         ),
       store_id: z.string().optional()
         .describe(
-          'Numeric Target store id whose prices and availability the response reflects. Defaults ' +
+          'Numeric Target store id whose prices the response reflects. Defaults ' +
           'to \'3991\'.',
         ),
     }),
@@ -100,7 +100,7 @@ export const targetToolSpecs: AnyScavioToolSpec[] = [
         ),
       store_id: z.string().optional()
         .describe(
-          'Numeric Target store id whose prices and availability the response reflects. Defaults ' +
+          'Numeric Target store id whose prices the response reflects. Defaults ' +
           'to \'3991\'.',
         ),
     }),
@@ -124,11 +124,31 @@ export const targetToolSpecs: AnyScavioToolSpec[] = [
         ),
       store_id: z.string().optional()
         .describe(
-          'Numeric Target store id whose prices and availability the response reflects. Defaults ' +
+          'Numeric Target store id whose prices the response reflects. Defaults ' +
           'to \'3991\'.',
         ),
     }),
     call: (client, input) => client.target.reviews(input),
+  }),
+  defineScavioTool({
+    key: 'scavioTargetAvailability',
+    id: 'scavio-target-availability',
+    platform: 'target',
+    endpoint: '/api/v1/target/availability',
+    credits: 1,
+    description:
+      'In-store stock for a Target product at every store near a ZIP: units available, ' +
+      'in-store, pickup, curbside and ship-to-store status, distance, address and hours. ' +
+      'Costs 1 credit.',
+    inputSchema: z.object({
+      tcin: z.string().describe('Target catalog id (tcin, e.g. \'85978609\').'),
+      zip: z.string().describe('5-digit US ZIP code to search around.'),
+      radius: z.number().int().optional()
+        .describe('Search radius in miles, 1-100. Defaults to 25. At most 20 stores.'),
+      store_id: z.string().optional()
+        .describe('Return only this Target store. It must be within radius of zip.'),
+    }),
+    call: (client, input) => client.target.availability(input),
   }),
 ];
 
@@ -136,3 +156,4 @@ export const createScavioTargetSearchTool = toolFactory(targetToolSpecs, 'scavio
 export const createScavioTargetCategoryTool = toolFactory(targetToolSpecs, 'scavioTargetCategory');
 export const createScavioTargetProductTool = toolFactory(targetToolSpecs, 'scavioTargetProduct');
 export const createScavioTargetReviewsTool = toolFactory(targetToolSpecs, 'scavioTargetReviews');
+export const createScavioTargetAvailabilityTool = toolFactory(targetToolSpecs, 'scavioTargetAvailability');

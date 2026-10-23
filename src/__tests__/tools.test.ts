@@ -402,6 +402,7 @@ describe('createScavioTools', () => {
       'scavioTargetCategory',
       'scavioTargetProduct',
       'scavioTargetReviews',
+      'scavioTargetAvailability',
       'scavioHomeDepotSearch',
       'scavioHomeDepotProduct',
       'scavioHomeDepotReviews',
@@ -464,18 +465,18 @@ describe('createScavioTools', () => {
     expect(tools.scavioGoogleSearch.id).toBe('scavio-google-search');
   });
 
-  // One tool per billable endpoint: 188 of them, the same number the repo-wide
+  // One tool per billable endpoint: 189 of them, the same number the repo-wide
   // coverage guard counts. 97 until 0.5.0; 0.6.0 added the 92-endpoint platform
   // fanout (21 new platforms, and walmart from 2 endpoints to 7) plus extract.
-  it('exposes 188 tools, one per billable endpoint', () => {
-    expect(Object.keys(createScavioTools({ apiKey: 'test-key' }))).toHaveLength(188);
+  it('exposes 189 tools, one per billable endpoint', () => {
+    expect(Object.keys(createScavioTools({ apiKey: 'test-key' }))).toHaveLength(189);
   });
 
   // 0.7.0: the five website tools (map, crawl, batch) are opt-in, so the default
   // tool set is unchanged and enableCrawl adds exactly five.
   it('adds the five website tools only with enableCrawl', () => {
     const tools = Object.keys(createScavioTools({ apiKey: 'test-key', enableCrawl: true }));
-    expect(tools).toHaveLength(193);
+    expect(tools).toHaveLength(194);
     expect(tools.slice(-5)).toEqual([
       'scavioMapWebsite',
       'scavioCrawlWebsite',

@@ -91,6 +91,7 @@ const CALL_PATHS: Record<string, string> = {
   scavioTargetCategory: 'target.category',
   scavioTargetProduct: 'target.product',
   scavioTargetReviews: 'target.reviews',
+  scavioTargetAvailability: 'target.availability',
   scavioHomeDepotSearch: 'homeDepot.search',
   scavioHomeDepotProduct: 'homeDepot.product',
   scavioHomeDepotReviews: 'homeDepot.reviews',
@@ -218,7 +219,7 @@ describe('fanout routing', () => {
   });
 
   it('registers one tool per fanout endpoint', () => {
-    expect(fanoutSpecs).toHaveLength(93);
+    expect(fanoutSpecs).toHaveLength(94);
     const registered = new Set(Object.keys(createScavioTools({ apiKey: 'test-key' })));
     const missing = Object.keys(CALL_PATHS).filter(key => !registered.has(key));
     expect(missing).toEqual([]);
@@ -347,14 +348,15 @@ describe('fanout endpoint coverage', () => {
     );
   });
 
-  it('covers all 4 Target endpoints', () => {
-    expect(targetToolSpecs).toHaveLength(4);
+  it('covers all 5 Target endpoints', () => {
+    expect(targetToolSpecs).toHaveLength(5);
     expect(endpointsFor(targetToolSpecs)).toEqual(
       [
         '/api/v1/target/search',
         '/api/v1/target/category',
         '/api/v1/target/product',
         '/api/v1/target/reviews',
+        '/api/v1/target/availability',
       ].sort(),
     );
   });
