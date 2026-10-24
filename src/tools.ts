@@ -58,6 +58,15 @@ import {
   createScavioHomeDepotSearchTool,
 } from './home-depot.js';
 import {
+  createScavioHebProductTool,
+  createScavioHebSearchTool,
+  createScavioHebStoresTool,
+} from './heb.js';
+import {
+  createScavioKrogerProductTool,
+  createScavioKrogerSearchTool,
+} from './kroger.js';
+import {
   createScavioZillowAgentReviewsTool,
   createScavioZillowPropertyTool,
   createScavioZillowSearchTool,
@@ -407,6 +416,11 @@ export function createScavioTools(config?: CreateScavioToolsOptions) {
     scavioHomeDepotSearch: createScavioHomeDepotSearchTool(config),
     scavioHomeDepotProduct: createScavioHomeDepotProductTool(config),
     scavioHomeDepotReviews: createScavioHomeDepotReviewsTool(config),
+    scavioHebSearch: createScavioHebSearchTool(config),
+    scavioHebProduct: createScavioHebProductTool(config),
+    scavioHebStores: createScavioHebStoresTool(config),
+    scavioKrogerSearch: createScavioKrogerSearchTool(config),
+    scavioKrogerProduct: createScavioKrogerProductTool(config),
     scavioZillowSearch: createScavioZillowSearchTool(config),
     scavioZillowProperty: createScavioZillowPropertyTool(config),
     scavioZillowAgentReviews: createScavioZillowAgentReviewsTool(config),

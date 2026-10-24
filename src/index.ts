@@ -181,6 +181,17 @@ export {
   homeDepotToolSpecs,
 } from './home-depot.js';
 export {
+  createScavioHebSearchTool,
+  createScavioHebProductTool,
+  createScavioHebStoresTool,
+  hebToolSpecs,
+} from './heb.js';
+export {
+  createScavioKrogerSearchTool,
+  createScavioKrogerProductTool,
+  krogerToolSpecs,
+} from './kroger.js';
+export {
   createScavioZillowSearchTool,
   createScavioZillowPropertyTool,
   createScavioZillowAgentReviewsTool,

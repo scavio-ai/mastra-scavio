@@ -31,6 +31,8 @@ export const SCAVIO_PLATFORMS = [
   'ebay',
   'target',
   'home-depot',
+  'heb',
+  'kroger',
   'zillow',
   'booking',
   'tripadvisor',
