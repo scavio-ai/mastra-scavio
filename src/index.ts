@@ -192,6 +192,11 @@ export {
   krogerToolSpecs,
 } from './kroger.js';
 export {
+  createScavioDecathlonSearchTool,
+  createScavioDecathlonProductTool,
+  decathlonToolSpecs,
+} from './decathlon.js';
+export {
   createScavioZillowSearchTool,
   createScavioZillowPropertyTool,
   createScavioZillowAgentReviewsTool,
