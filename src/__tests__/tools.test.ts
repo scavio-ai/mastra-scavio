@@ -191,6 +191,7 @@ vi.mock('scavio', () => ({
 }));
 
 import { createScavioGoogleSearchTool, googleToolSpecs } from '../google.js';
+import { hebToolSpecs } from '../heb.js';
 import { instagramToolSpecs } from '../instagram.js';
 import { linkedinToolSpecs } from '../linkedin.js';
 import {
@@ -406,6 +407,11 @@ describe('createScavioTools', () => {
       'scavioHomeDepotSearch',
       'scavioHomeDepotProduct',
       'scavioHomeDepotReviews',
+      'scavioHebSearch',
+      'scavioHebProduct',
+      'scavioHebStores',
+      'scavioKrogerSearch',
+      'scavioKrogerProduct',
       'scavioZillowSearch',
       'scavioZillowProperty',
       'scavioZillowAgentReviews',
@@ -465,18 +471,18 @@ describe('createScavioTools', () => {
     expect(tools.scavioGoogleSearch.id).toBe('scavio-google-search');
   });
 
-  // One tool per billable endpoint: 189 of them, the same number the repo-wide
+  // One tool per billable endpoint: 194 of them, the same number the repo-wide
   // coverage guard counts. 97 until 0.5.0; 0.6.0 added the 92-endpoint platform
   // fanout (21 new platforms, and walmart from 2 endpoints to 7) plus extract.
-  it('exposes 189 tools, one per billable endpoint', () => {
-    expect(Object.keys(createScavioTools({ apiKey: 'test-key' }))).toHaveLength(189);
+  it('exposes 194 tools, one per billable endpoint', () => {
+    expect(Object.keys(createScavioTools({ apiKey: 'test-key' }))).toHaveLength(194);
   });
 
   // 0.7.0: the five website tools (map, crawl, batch) are opt-in, so the default
   // tool set is unchanged and enableCrawl adds exactly five.
   it('adds the five website tools only with enableCrawl', () => {
     const tools = Object.keys(createScavioTools({ apiKey: 'test-key', enableCrawl: true }));
-    expect(tools).toHaveLength(194);
+    expect(tools).toHaveLength(199);
     expect(tools.slice(-5)).toEqual([
       'scavioMapWebsite',
       'scavioCrawlWebsite',
@@ -1229,5 +1235,15 @@ describe('TikTok Shop tools', () => {
     const tools = createScavioTools({ apiKey: 'test-key' });
     await tools.scavioTiktokShopCategories.execute!({}, {} as any);
     expect(mockTiktokShopCategories).toHaveBeenCalledWith();
+  });
+});
+
+describe('HEB store_id', () => {
+  const shapeOf = (key: string) =>
+    Object.keys((hebToolSpecs.find((t) => t.key === key)!.inputSchema as any).shape);
+
+  it('search and product take store_id', () => {
+    expect(shapeOf('scavioHebSearch')).toEqual(['query', 'page', 'page_size', 'store_id']);
+    expect(shapeOf('scavioHebProduct')).toEqual(['product_url', 'product_id', 'slug', 'store_id']);
   });
 });

@@ -14,12 +14,17 @@ export const hebToolSpecs: AnyScavioToolSpec[] = [
     credits: 2,
     description:
       'Search HEB grocery products: price in cents, sale status, unit price, size, UPC, stock, ' +
-      'EBT/SNAP eligibility, aisle location and product URL. Costs 2 credits.',
+      'EBT/SNAP eligibility, aisle location and product URL. Pass store_id for one store\'s ' +
+      'prices, stock and assortment. Costs 2 credits.',
     inputSchema: z.object({
       query: z.string().describe('Search keywords (1-200 characters).'),
       page: z.number().int().optional().describe('Results page, 1-based (1-100).'),
       page_size: z.number().int().optional()
-        .describe('Results per page, 1-60. Server default 30.'),
+        .describe('Results per page, 1-60. Defaults to 60.'),
+      store_id: z.string().optional()
+        .describe(
+          "HEB store number from the HEB stores tool (store_number), e.g. '441'. Prices, stock, aisle location and assortment come from that store; the store used is echoed in data.store {store_id, name}. US only. Omit for HEB's default store.",
+        ),
     }),
     call: (client, input) => client.heb.search(input),
   }),
@@ -32,7 +37,8 @@ export const hebToolSpecs: AnyScavioToolSpec[] = [
     description:
       'Full HEB product detail: nutrition facts, ingredients, description, images, similar ' +
       'products, coupons, EBT/SNAP eligibility and breadcrumbs. Pass product_url (from search) ' +
-      'or slug + product_id. Costs 2 credits.',
+      'or slug + product_id; with store_id, product_id alone works and price, stock and aisle ' +
+      'are for that store. Costs 2 credits.',
     inputSchema: z.object({
       product_url: z.string().optional()
         .describe(
@@ -41,9 +47,13 @@ export const hebToolSpecs: AnyScavioToolSpec[] = [
           'Preferred over slug + product_id.',
         ),
       product_id: z.string().optional()
-        .describe('HEB product id (numeric id at the end of a product URL). Requires slug.'),
+        .describe('HEB product id. Needs slug, unless store_id is set (then product_id alone works).'),
       slug: z.string().optional()
-        .describe('Product slug (readable part of the URL). Required with product_id.'),
+        .describe('Product slug (readable part of the URL). Required with product_id unless store_id is set.'),
+      store_id: z.string().optional()
+        .describe(
+          "HEB store number from the HEB stores tool (store_number), e.g. '441'. Prices, stock, aisle location and assortment come from that store; the store used is echoed in data.store {store_id, name}. US only. Omit for HEB's default store.",
+        ),
     }),
     call: (client, input) => client.heb.product(input),
   }),
