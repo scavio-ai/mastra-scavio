@@ -191,7 +191,7 @@ Most calls cost 1 credit. Every tool states its own cost in its description, so 
 |---|---|
 | All Google, Amazon, Reddit, TikTok, TikTok Shop and X tools | 1 |
 | All eBay, Target, Zillow, Redfin, Booking.com, Airbnb, App Store, SEC EDGAR, Companies House, Google Ads Transparency and Meta Ad Library tools | 1 |
-| All Home Depot, Tripadvisor, Indeed, Yelp, Google Play and Capterra tools | 2 |
+| All Home Depot, Tripadvisor, Indeed, Yelp, Google Play, Capterra and Glassdoor tools | 2 |
 | All G2 tools | 5 |
 | `scavioKuaishouVideo` | 2 |
 | `scavioKuaishouProfile`, `scavioKuaishouSearch`, `scavioKuaishouSearchVideos`, `scavioKuaishouSearchUsers`, `scavioKuaishouSearchLive` | 10 |

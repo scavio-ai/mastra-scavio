@@ -3,9 +3,9 @@ import { z } from 'zod';
 import { defineScavioTool, toolFactory } from './tool.js';
 import type { AnyScavioToolSpec } from './tool.js';
 
-// Glassdoor - 4 endpoints. 1 credit flat on all four endpoints. Addressing reviews or salaries
+// Glassdoor - 4 endpoints. 2 credits flat on all four endpoints. Addressing reviews or salaries
 // by employer_id takes an extra lookup where the url form does not; the price to you is
-// 1 either way, but passing back reviews_url / salaries_url is the faster path.
+// 2 either way, but passing back reviews_url / salaries_url is the faster path.
 //
 // LOOKUP FIRST: scavio-glassdoor-companies is the entry point. Every other Glassdoor endpoint is
 // keyed by an id that only exists inside Glassdoor's own URLs, so a caller holding a name
@@ -17,10 +17,10 @@ export const glassdoorToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-glassdoor-companies',
     platform: 'glassdoor',
     endpoint: '/api/v1/glassdoor/companies',
-    credits: 1,
+    credits: 2,
     description:
       'START HERE. Resolve a company NAME to the employer_id every other Glassdoor method is ' +
-      'keyed by, ranked by Glassdoor and de-duplicated. Costs 1 credit.',
+      'keyed by, ranked by Glassdoor and de-duplicated. Costs 2 credits.',
     inputSchema: z.object({
       query: z.string().describe('Company name to resolve (1-120 characters).'),
     }),
@@ -31,13 +31,13 @@ export const glassdoorToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-glassdoor-company',
     platform: 'glassdoor',
     endpoint: '/api/v1/glassdoor/company',
-    credits: 1,
+    credits: 2,
     description:
       'Glassdoor employer profile: description, mission, industry, sector, HQ, size and revenue ' +
       'bands, stock symbol, year founded, overall and per-category ratings, star distribution, ' +
       'CEO approval, awards, FAQ and the five server-rendered reviews. Also returns reviews_url ' +
       'and salaries_url, which reviews() and salaries() accept as url to save a fetch. Provide ' +
-      'employer_id or url. Costs 1 credit.',
+      'employer_id or url. Costs 2 credits.',
     inputSchema: z.object({
       employer_id: z.string().optional()
         .describe(
@@ -63,13 +63,13 @@ export const glassdoorToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-glassdoor-reviews',
     platform: 'glassdoor',
     endpoint: '/api/v1/glassdoor/reviews',
-    credits: 1,
+    credits: 2,
     description:
       'Up to THREE full Glassdoor reviews - the cap is Glassdoor\'s login wall - with per-axis ' +
       'scores, pros, cons, advice, job title, location, employment status and employer response, ' +
       'plus complete rating statistics, star distribution, aggregate pro/con highlight terms and ' +
       'per-job-title review counts. There is no page param: move the window with category and ' +
-      'employment_status. Provide employer_id or url. Costs 1 credit.',
+      'employment_status. Provide employer_id or url. Costs 2 credits.',
     inputSchema: z.object({
       employer_id: z.string().optional()
         .describe(
@@ -114,12 +114,12 @@ export const glassdoorToolSpecs: AnyScavioToolSpec[] = [
     id: 'scavio-glassdoor-salaries',
     platform: 'glassdoor',
     endpoint: '/api/v1/glassdoor/salaries',
-    credits: 1,
+    credits: 2,
     description:
       'Glassdoor salaries by job title, 10 titles per page: base-pay and total-pay percentiles ' +
       'P10-P90 with medians called out, sample counts, currency, pay period and last-reported ' +
       'date. The figures are Glassdoor\'s ESTIMATES for the title, not individual reported ' +
-      'salaries. Provide employer_id or url. Costs 1 credit.',
+      'salaries. Provide employer_id or url. Costs 2 credits.',
     inputSchema: z.object({
       employer_id: z.string().optional()
         .describe(
